@@ -528,53 +528,32 @@
                 <div class="content-page">
                     <h1>Frequently Asked Questions</h1>
                     
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(1)">
-                            What is IMG Counselor and how does it work?
-                            <span>+</span>
-                        </div>
-                        <div class="faq-answer" id="faq1">
-                            IMG Counselor is an AI-powered platform designed to help International Medical Graduates navigate the residency application process. Our system analyzes your profile and provides personalized recommendations to optimize your application strategy while minimizing costs.
-                        </div>
+                    <!-- Search FAQ Section -->
+                    <div class="input-group">
+                        <label for="faqSearch">Search FAQs or Ask a Question:</label>
+                        <textarea id="faqSearch" rows="3" placeholder="Type your question here..."></textarea>
                     </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(2)">
-                            How can this platform help me save money on applications?
-                            <span>+</span>
-                        </div>
-                        <div class="faq-answer" id="faq2">
-                            Our AI analyzes your credentials against historical match data to recommend programs where you have the highest chances of success. This targeted approach helps you avoid applying to programs where your chances are minimal, potentially saving hundreds or thousands of dollars in application fees.
-                        </div>
+                    <button class="btn" onclick="searchFAQ()">Search FAQ</button>
+                    <button class="btn btn-secondary" onclick="loadAllFAQs()">Load All FAQs</button>
+                    <button class="btn btn-secondary" onclick="clearFAQResults()">Clear Results</button>
+                    
+                    <!-- Loading Spinner for FAQs -->
+                    <div id="faqLoading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p style="text-align: center;">Loading FAQs...</p>
                     </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(3)">
-                            Is my personal information secure?
-                            <span>+</span>
-                        </div>
-                        <div class="faq-answer" id="faq3">
-                            Yes, we take data security very seriously. All personal information is encrypted and stored securely. We never share your individual data with third parties and comply with all relevant privacy regulations.
-                        </div>
+                    
+                    <!-- FAQ Answer Section -->
+                    <div id="faqAnswer" class="response-area" style="display: none;">
+                        <h3>Answer:</h3>
+                        <div id="faqAnswerContent"></div>
                     </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(4)">
-                            What kind of questions can I ask the AI assistant?
-                            <span>+</span>
-                        </div>
-                        <div class="faq-answer" id="faq4">
-                            You can ask about USMLE requirements, residency program information, application timelines, visa processes, interview preparation, and many other IMG-related topics. Our AI is continuously updated with the latest information in medical education and residency matching.
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(5)">
-                            How accurate are the program recommendations?
-                            <span>+</span>
-                        </div>
-                        <div class="faq-answer" id="faq5">
-                            Our recommendations are based on comprehensive analysis of historical match data, program requirements, and success patterns. While we strive for high accuracy, final application decisions should always consider multiple factors and personal preferences.
+                    
+                    <!-- All FAQs Container -->
+                    <div id="allFAQsContainer" style="margin-top: 2rem;">
+                        <!-- Dynamic FAQ content will be loaded here -->
+                        <div style="text-align: center; color: #666; padding: 2rem;">
+                            <p>Click "Load All FAQs" to see all available questions and answers, or use the search box above to find specific information.</p>
                         </div>
                     </div>
                 </div>
@@ -978,10 +957,96 @@
             }, 5000);
         }
 
+            // FAQ Functions
+            async function loadAllFAQs() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/all-faqs`);
+                    const result = await response.json();
+                    
+                    if (result.topics) {
+                        displayAllFAQs(result.topics);
+                    } else if (result.error) {
+                        showStatus(`Error: ${result.error}`, "error");
+                    }
+                } catch (error) {
+                    showStatus(`API Error: ${error.message}`, "error");
+                }
+            }
+
+            function displayAllFAQs(topics) {
+                const container = document.getElementById('allFAQsContainer');
+                let html = '<h2>All FAQ Topics</h2>';
+                
+                Object.entries(topics).forEach(([topic, faqs], topicIndex) => {
+                    html += `<h3 style="color: #667eea; margin-top: 2rem;">${topic}</h3>`;
+                    
+                    faqs.forEach((faq, faqIndex) => {
+                        const uniqueId = `topic${topicIndex}_faq${faqIndex}`;
+                        html += `
+                            <div class="faq-item">
+                                <div class="faq-question" onclick="toggleDynamicFaq('${uniqueId}')">
+                                    ${faq.question}
+                                    <span>+</span>
+                                </div>
+                                <div class="faq-answer" id="${uniqueId}" style="display: none;">
+                                    ${faq.answer}
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+                
+                container.innerHTML = html;
+            }
+
+            async function searchFAQ() {
+                const question = document.getElementById('faqSearch').value.trim();
+                if (!question) {
+                    showStatus("Please enter a question.", "warning");
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/faq-answer`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ question: question })
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.answer) {
+                        document.getElementById('faqAnswerContent').innerHTML = result.answer.replace(/\n/g, '<br>');
+                        document.getElementById('faqAnswer').style.display = 'block';
+                    } else if (result.error) {
+                        showStatus(`Error: ${result.error}`, "error");
+                    }
+                } catch (error) {
+                    showStatus(`API Error: ${error.message}`, "error");
+                }
+            }
+
+            function toggleDynamicFaq(faqId) {
+                const answer = document.getElementById(faqId);
+                const question = answer.previousElementSibling;
+                const icon = question.querySelector('span');
+                
+                if (answer.style.display === 'none') {
+                    answer.style.display = 'block';
+                    icon.textContent = '-';
+                } else {
+                    answer.style.display = 'none';
+                    icon.textContent = '+';
+                }
+            }
+
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             // Test connection on load
             testConnection();
+            
+            // Add after testConnection();
+            loadAllFAQs();
             
             // Set initial user
             document.getElementById('currentUser').textContent = currentUser;
