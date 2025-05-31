@@ -13,7 +13,7 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #ffebee;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
         }
@@ -21,14 +21,14 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
         
         /* Header */
         .header {
-            background: rgba(255, 205, 210, 0.95);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(211, 47, 47, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             position: fixed;
             top: 0;
             left: 0;
@@ -37,71 +37,115 @@
             padding: 1rem 0;
         }
         
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #d32f2f;
+            color: #667eea;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
         
-        /* Tabs */
-        .tabs {
+        .nav-links {
             display: flex;
-            border-bottom: 1px solid #ffcdd2;
-            margin-bottom: 1rem;
+            gap: 2rem;
+            list-style: none;
         }
         
-        .tab {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            background-color: #ffebee;
-            border: 1px solid #ffcdd2;
-            border-bottom: none;
-            margin-right: 0.5rem;
-            border-radius: 8px 8px 0 0;
-            color: #d32f2f;
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
             font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
         }
         
-        .tab.active {
-            background-color: #ffcdd2;
-            color: #d32f2f;
-            border-color: #d32f2f;
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #667eea;
         }
         
-        .tab-content {
+        /* Main Content */
+        .main {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            padding: 2rem 0;
+        }
+        
+        .page {
             display: none;
-            padding: 1.5rem;
-            background-color: white;
-            border-radius: 0 8px 8px 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease;
         }
         
-        .tab-content.active {
+        .page.active {
             display: block;
         }
         
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 80px;
-            width: 250px;
-            height: calc(100vh - 80px);
-            background-color: white;
-            padding: 1.5rem;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .main-content {
-            margin-left: 250px;
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Chat Interface */
+        .chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .chat-body {
             padding: 2rem;
         }
         
-        /* Form Elements */
+        .user-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
         .input-group {
             margin-bottom: 1.5rem;
         }
@@ -121,29 +165,37 @@
             font-size: 1rem;
             transition: border-color 0.3s ease;
             font-family: inherit;
-            background-color: white;
         }
         
         textarea:focus, input[type="text"]:focus, input[type="email"]:focus {
             outline: none;
-            border-color: #d32f2f;
+            border-color: #667eea;
         }
         
         .btn {
-            background-color: #ffcdd2;
-            color: #d32f2f;
-            border: 1px solid #d32f2f;
-            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
             border-radius: 25px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
         }
         
         .btn:hover {
-            background-color: #ef9a9a;
-            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
         }
         
         /* Response Area */
@@ -152,7 +204,12 @@
             border-radius: 12px;
             padding: 1.5rem;
             margin: 1.5rem 0;
-            border-left: 4px solid #d32f2f;
+            border-left: 4px solid #667eea;
+        }
+        
+        .response-area h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
         }
         
         /* FAQ Section */
@@ -175,7 +232,7 @@
         }
         
         .faq-question:hover {
-            background-color: #ffebee;
+            background-color: #f8f9fa;
         }
         
         .faq-answer {
@@ -211,6 +268,85 @@
             color: #ffc107;
         }
         
+        /* Content Pages */
+        .content-page {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            padding: 3rem;
+        }
+        
+        .content-page h1 {
+            color: #667eea;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .content-page h2 {
+            color: #333;
+            margin: 2rem 0 1rem 0;
+            font-size: 1.5rem;
+        }
+        
+        .content-page p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        /* History */
+        .history-item {
+            background: white;
+            border-radius: 12px;
+            margin: 1rem 0;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-item h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-item p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        /* User Management */
+        .user-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         /* Status Messages */
         .status {
             padding: 1rem;
@@ -236,41 +372,27 @@
             border-left: 4px solid #ffc107;
         }
         
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #d32f2f;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: static;
-                height: auto;
+            .nav-links {
+                display: none;
             }
             
-            .main-content {
-                margin-left: 0;
+            .hero h1 {
+                font-size: 2.5rem;
             }
             
-            .tabs {
-                flex-direction: column;
+            .user-grid {
+                grid-template-columns: 1fr;
             }
             
-            .tab {
-                border-radius: 0;
-                margin-right: 0;
+            .chat-body {
+                padding: 1rem;
+            }
+            
+            .content-page {
+                padding: 2rem;
+                margin: 1rem;
             }
         }
     </style>
@@ -278,132 +400,219 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo">
-                ⚕️ IMG Counselor
-            </div>
+            <nav class="nav">
+                <div class="logo">
+                    ⚕️ IMG Counselor
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('search')" class="active">Search</a></li>
+                    <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                    <li><a href="#" onclick="showPage('faqs')">FAQs</a></li>
+                    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <div class="sidebar">
-        <h3>Configuration</h3>
-        <div class="user-info">
-            <strong>Current User:</strong> <span id="currentUser">user_1234</span>
-        </div>
-        
-        <div class="input-group">
-            <button id="testConnectionBtn" class="btn" style="width: 100%;">Test API Connection</button>
-        </div>
-        
-        <div id="connectionStatus"></div>
-    </div>
+    <main class="main">
+        <div class="container">
+            <!-- Search Page (Main Chat Interface) -->
+            <div id="search" class="page active">
+                <div class="hero">
+                    <h1>IMG Counselor</h1>
+                    <p>Your AI-powered guide for International Medical Graduate applications</p>
+                </div>
 
-    <div class="main-content">
-        <h1>IMG Counselor</h1>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="chat">Chat</div>
-            <div class="tab" data-tab="user">User Management</div>
-            <div class="tab" data-tab="history">History</div>
-            <div class="tab" data-tab="contact">Contact Us</div>
-        </div>
-        
-        <!-- Chat Tab -->
-        <div id="chat" class="tab-content active">
-            <h2>Search for IMG related Info</h2>
-            <p class="user-caption">Chatting as: <span id="chatUser">user_1234</span></p>
-            
-            <div class="input-group">
-                <label for="question">Ask a question:</label>
-                <textarea id="question" rows="4" placeholder="Enter your IMG-related question..."></textarea>
-            </div>
-            
-            <button id="sendBtn" class="btn">Send</button>
-            
-            <div id="loading" style="display: none;">
-                <div class="spinner"></div>
-                <p style="text-align: center;">Thinking...</p>
-            </div>
-            
-            <div id="response" class="response-area" style="display: none;">
-                <h3>Here's the info:</h3>
-                <div id="responseContent"></div>
-            </div>
-            
-            <div id="faqs" style="display: none;">
-                <h4>Related FAQs:</h4>
-                <div id="faqContent"></div>
-            </div>
-            
-            <div id="rating" class="rating-container" style="display: none;">
-                <h4>Rate this response:</h4>
-                <input type="range" id="ratingSlider" min="0" max="5" value="3" step="1" style="width: 100%;">
-                <div style="display: flex; justify-content: space-between;">
-                    <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-                </div>
-                
-                <div class="input-group">
-                    <label for="suggestion">Any suggestions to improve above response? (optional)</label>
-                    <textarea id="suggestion" rows="3" placeholder="Your suggestions..."></textarea>
-                </div>
-                
-                <button id="submitFeedbackBtn" class="btn">Submit Feedback</button>
-            </div>
-        </div>
-        
-        <!-- User Management Tab -->
-        <div id="user" class="tab-content">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                <div>
-                    <h3>Switch User</h3>
-                    <div class="input-group">
-                        <label for="newUserId">Enter new user ID:</label>
-                        <input type="text" id="newUserId" value="user_5678">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h2>Search for IMG Related Information</h2>
                     </div>
-                    <button id="changeUserBtn" class="btn">Change User</button>
+                    <div class="chat-body">
+                        <div class="user-info">
+                            <strong>Current User:</strong> <span id="currentUser">user_1234</span>
+                            <button class="btn btn-secondary" onclick="showUserManagement()" style="float: right; padding: 0.5rem 1rem; font-size: 0.8rem;">Manage Users</button>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="question">Ask your question:</label>
+                            <textarea id="question" rows="4" placeholder="Enter your IMG-related question here..."></textarea>
+                        </div>
+
+                        <button class="btn" onclick="sendMessage()">Send Question</button>
+                        <button class="btn btn-secondary" onclick="loadHistory()">View History</button>
+                        <button class="btn btn-secondary" onclick="testConnection()">Test Connection</button>
+
+                        <div id="loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <p style="text-align: center;">Thinking...</p>
+                        </div>
+
+                        <div id="response" class="response-area" style="display: none;">
+                            <h3>Here's the information:</h3>
+                            <div id="responseContent"></div>
+                        </div>
+
+                        <div id="faqs" style="display: none;">
+                            <h3>Related FAQs:</h3>
+                            <div id="faqContent"></div>
+                        </div>
+
+                        <div id="rating" class="rating-container" style="display: none;">
+                            <h4>Rate this response:</h4>
+                            <div class="stars" id="starRating">
+                                <span class="star" onclick="setRating(1)">★</span>
+                                <span class="star" onclick="setRating(2)">★</span>
+                                <span class="star" onclick="setRating(3)">★</span>
+                                <span class="star" onclick="setRating(4)">★</span>
+                                <span class="star" onclick="setRating(5)">★</span>
+                            </div>
+                            <div class="input-group">
+                                <label for="suggestion">Suggestions for improvement (optional):</label>
+                                <textarea id="suggestion" rows="3" placeholder="How can we improve this response?"></textarea>
+                            </div>
+                            <button class="btn" onclick="submitRating()">Submit Feedback</button>
+                        </div>
+
+                        <!-- User Management Modal -->
+                        <div id="userManagement" style="display: none;">
+                            <div class="user-grid">
+                                <div class="user-card">
+                                    <h3>Switch User</h3>
+                                    <div class="input-group">
+                                        <label for="newUserId">New User ID:</label>
+                                        <input type="text" id="newUserId" value="user_5678">
+                                    </div>
+                                    <button class="btn" onclick="changeUser()">Change User</button>
+                                </div>
+                                <div class="user-card">
+                                    <h3>Active Users</h3>
+                                    <button class="btn btn-secondary" onclick="loadActiveUsers()">Refresh User List</button>
+                                    <div id="activeUsers"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- History Section -->
+                        <div id="historySection" style="display: none;">
+                            <h3>Chat History</h3>
+                            <div id="historyContent"></div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div>
-                    <h3>Active Users</h3>
-                    <button id="refreshUsersBtn" class="btn">Refresh User List</button>
-                    <div id="activeUsers" style="margin-top: 1rem;"></div>
+            </div>
+
+            <!-- About Us Page -->
+            <div id="about" class="page">
+                <div class="content-page">
+                    <h1>About IMG Counselor</h1>
+                    <p>Welcome to IMG Counselor, your trusted companion in navigating the complex journey of International Medical Graduate (IMG) applications.</p>
+                    
+                    <h2>Our Mission</h2>
+                    <p>We intend to help IMGs get their desired medical residency positions while spending less on application fees. Our AI-powered platform provides personalized guidance, helping you make informed decisions about where to apply and how to maximize your chances of success.</p>
+                    
+                    <h2>What We Offer</h2>
+                    <p>• <strong>Smart Application Strategy:</strong> Get personalized recommendations on which programs to apply to based on your profile</p>
+                    <p>• <strong>Cost Optimization:</strong> Reduce unnecessary application fees by targeting the right programs</p>
+                    <p>• <strong>Real-time Guidance:</strong> 24/7 AI assistant to answer your IMG-related questions</p>
+                    <p>• <strong>Success Analytics:</strong> Data-driven insights to improve your application strategy</p>
+                    
+                    <h2>Why Choose Us?</h2>
+                    <p>Traditional application processes can be overwhelming and expensive. Our platform leverages artificial intelligence and comprehensive data analysis to provide you with targeted advice, potentially saving you thousands of dollars in application fees while increasing your chances of matching into your preferred residency program.</p>
+                    
+                    <p>Join thousands of IMGs who have successfully navigated their residency applications with our guidance.</p>
+                </div>
+            </div>
+
+            <!-- FAQs Page -->
+            <div id="faqs" class="page">
+                <div class="content-page">
+                    <h1>Frequently Asked Questions</h1>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(1)">
+                            What is IMG Counselor and how does it work?
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer" id="faq1">
+                            IMG Counselor is an AI-powered platform designed to help International Medical Graduates navigate the residency application process. Our system analyzes your profile and provides personalized recommendations to optimize your application strategy while minimizing costs.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(2)">
+                            How can this platform help me save money on applications?
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer" id="faq2">
+                            Our AI analyzes your credentials against historical match data to recommend programs where you have the highest chances of success. This targeted approach helps you avoid applying to programs where your chances are minimal, potentially saving hundreds or thousands of dollars in application fees.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(3)">
+                            Is my personal information secure?
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer" id="faq3">
+                            Yes, we take data security very seriously. All personal information is encrypted and stored securely. We never share your individual data with third parties and comply with all relevant privacy regulations.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(4)">
+                            What kind of questions can I ask the AI assistant?
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer" id="faq4">
+                            You can ask about USMLE requirements, residency program information, application timelines, visa processes, interview preparation, and many other IMG-related topics. Our AI is continuously updated with the latest information in medical education and residency matching.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(5)">
+                            How accurate are the program recommendations?
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer" id="faq5">
+                            Our recommendations are based on comprehensive analysis of historical match data, program requirements, and success patterns. While we strive for high accuracy, final application decisions should always consider multiple factors and personal preferences.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Page -->
+            <div id="contact" class="page">
+                <div class="content-page">
+                    <h1>Contact Us</h1>
+                    <p>Have questions, suggestions, or need support? We'd love to hear from you!</p>
+                    
+                    <div class="input-group">
+                        <label for="contactName">Your Name:</label>
+                        <input type="text" id="contactName" placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="contactEmail">Your Email:</label>
+                        <input type="email" id="contactEmail" placeholder="Enter your email address">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="contactMessage">Your Message:</label>
+                        <textarea id="contactMessage" rows="6" placeholder="Describe your issue, suggestion, or inquiry..."></textarea>
+                    </div>
+                    
+                    <button class="btn" onclick="submitContact()">Send Message</button>
+                    
+                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                        <h2>Other Ways to Reach Us</h2>
+                        <p><strong>Email:</strong> support@imgcounselor.com</p>
+                        <p><strong>Response Time:</strong> We typically respond within 24 hours</p>
+                        <p><strong>Business Hours:</strong> Monday - Friday, 9 AM - 6 PM EST</p>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- History Tab -->
-        <div id="history" class="tab-content">
-            <h2>Chat History Review</h2>
-            <p class="user-caption">Viewing history for: <span id="historyUser">user_1234</span></p>
-            
-            <button id="loadHistoryBtn" class="btn">Load My History</button>
-            
-            <div id="historyContent" style="margin-top: 1.5rem;"></div>
-        </div>
-        
-        <!-- Contact Tab -->
-        <div id="contact" class="tab-content">
-            <h2>Contact Us</h2>
-            
-            <div class="input-group">
-                <label for="contactName">Your Name:</label>
-                <input type="text" id="contactName">
-            </div>
-            
-            <div class="input-group">
-                <label for="contactEmail">Your Email:</label>
-                <input type="email" id="contactEmail">
-            </div>
-            
-            <div class="input-group">
-                <label for="contactMessage">Enter your message:</label>
-                <textarea id="contactMessage" rows="5" placeholder="Describe your issue or suggestion..."></textarea>
-            </div>
-            
-            <button id="submitContactBtn" class="btn">Submit Message</button>
-            
-            <div id="contactStatus" style="margin-top: 1rem;"></div>
-        </div>
-    </div>
+    </main>
 
     <script>
         // API Configuration
@@ -414,150 +623,83 @@
         let apiConnected = false;
         let lastQuestion = "";
         let lastResponse = "";
-        let currentRating = 3; // Default to 3 stars
-        
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs and content
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    this.classList.add('active');
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
+        let currentRating = 0;
+
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
             });
             
-            // Test connection button
-            document.getElementById('testConnectionBtn').addEventListener('click', testConnection);
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
             
-            // Send message button
-            document.getElementById('sendBtn').addEventListener('click', sendMessage);
-            
-            // Rating slider
-            document.getElementById('ratingSlider').addEventListener('input', function() {
-                currentRating = parseInt(this.value);
+            // Update navigation
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
             });
-            
-            // Submit feedback button
-            document.getElementById('submitFeedbackBtn').addEventListener('click', submitRating);
-            
-            // Change user button
-            document.getElementById('changeUserBtn').addEventListener('click', changeUser);
-            
-            // Refresh users button
-            document.getElementById('refreshUsersBtn').addEventListener('click', getActiveUsers);
-            
-            // Load history button
-            document.getElementById('loadHistoryBtn').addEventListener('click', getChatHistory);
-            
-            // Submit contact button
-            document.getElementById('submitContactBtn').addEventListener('click', submitContactMessage);
-            
-            // Initialize user display
-            updateUserDisplay();
-        });
-        
-        // Update user display across the app
-        function updateUserDisplay() {
-            document.getElementById('currentUser').textContent = currentUser;
-            document.getElementById('chatUser').textContent = currentUser;
-            document.getElementById('historyUser').textContent = currentUser;
+            event.target.classList.add('active');
         }
-        
-        // Show status message
-        function showStatus(message, type, elementId = null) {
-            const statusDiv = document.createElement('div');
-            statusDiv.className = `status ${type}`;
-            statusDiv.textContent = message;
-            
-            if (elementId) {
-                // Clear previous status
-                const container = document.getElementById(elementId);
-                container.innerHTML = '';
-                container.appendChild(statusDiv);
-            } else {
-                // Show as toast
-                document.body.appendChild(statusDiv);
-                setTimeout(() => {
-                    statusDiv.remove();
-                }, 5000);
-            }
-        }
-        
-        // Test API connection
+
+        // API Functions
         async function testConnection() {
-            const statusElement = document.getElementById('connectionStatus');
-            statusElement.innerHTML = '<p>Testing connection...</p>';
-            
+            showStatus("Testing connection...", "info");
             try {
-                const response = await fetch(`${API_BASE_URL}/get-active-users`);
+                const response = await fetch(`${API_BASE_URL}/get-active-users`, { timeout: 5000 });
                 if (response.ok) {
                     apiConnected = true;
-                    statusElement.innerHTML = '<p style="color: green;">✅ Successfully connected</p>';
+                    showStatus("✅ Successfully connected to API", "success");
                 } else {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error("Connection failed");
                 }
             } catch (error) {
                 apiConnected = false;
-                statusElement.innerHTML = `
-                    <p style="color: red;">❌ Connection Failed - Check:</p>
-                    <ul>
-                        <li>API URL is correct</li>
-                        <li>CORS is configured</li>
-                        <li>API is running</li>
-                        <li>Network connectivity</li>
-                    </ul>
-                `;
+                showStatus("❌ Connection failed. Please check API status.", "error");
             }
         }
-        
-        // Send message to assistant
+
         async function sendMessage() {
             const question = document.getElementById('question').value.trim();
             if (!question) {
                 showStatus("Please enter a question.", "warning");
                 return;
             }
-            
+
             if (!apiConnected) {
                 showStatus("Please test API connection first.", "warning");
                 return;
             }
-            
+
             // Show loading
             document.getElementById('loading').style.display = 'block';
             document.getElementById('response').style.display = 'none';
             document.getElementById('faqs').style.display = 'none';
             document.getElementById('rating').style.display = 'none';
-            
+
             try {
                 const response = await fetch(`${API_BASE_URL}/chat`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_id: currentUser, question: question })
                 });
-                
+
                 const result = await response.json();
                 document.getElementById('loading').style.display = 'none';
-                
+
                 if (result.answer) {
                     // Clean and display answer
                     const uniqueLines = [...new Set(result.answer.split('\n'))];
                     const cleanedAnswer = uniqueLines.join('\n');
                     
-                    document.getElementById('responseContent').textContent = cleanedAnswer;
+                    document.getElementById('responseContent').innerHTML = cleanedAnswer.replace(/\n/g, '<br>');
                     document.getElementById('response').style.display = 'block';
-                    
+
                     // Display FAQs if available
                     if (result.faqs && result.faqs.length > 0) {
                         displayFaqs(result.faqs, result.faq_intro);
                     }
-                    
+
                     // Store for rating
                     lastQuestion = question;
                     lastResponse = cleanedAnswer;
@@ -573,26 +715,25 @@
                 showStatus(`API Error: ${error.message}`, "error");
             }
         }
-        
-        // Display FAQs
+
         function displayFaqs(faqs, intro) {
             const faqContent = document.getElementById('faqContent');
             let html = '';
             
             if (intro) {
-                html += `<p><strong>${intro}</strong></p>`;
+                html += `<h4>${intro}</h4>`;
             }
             
             faqs.forEach((faq, index) => {
                 html += `
                     <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(${index})">
-                            FAQ ${index + 1}: ${faq.question.substring(0, 60)}${faq.question.length > 60 ? '...' : ''}
+                        <div class="faq-question" onclick="toggleChatFaq(${index})">
+                            ${faq.question}
                             <span>+</span>
                         </div>
-                        <div class="faq-answer" id="faqAnswer${index}">
-                            <p><strong>Q:</strong> ${faq.question}</p>
-                            <p><strong>A:</strong> ${faq.answer}</p>
+                        <div class="faq-answer" id="chatFaq${index}">
+                            <strong>Q:</strong> ${faq.question}<br>
+                            <strong>A:</strong> ${faq.answer}
                         </div>
                     </div>
                 `;
@@ -601,10 +742,9 @@
             faqContent.innerHTML = html;
             document.getElementById('faqs').style.display = 'block';
         }
-        
-        // Toggle FAQ visibility
-        function toggleFaq(index) {
-            const answer = document.getElementById(`faqAnswer${index}`);
+
+        function toggleChatFaq(index) {
+            const answer = document.getElementById(`chatFaq${index}`);
             const question = answer.previousElementSibling;
             const icon = question.querySelector('span');
             
@@ -616,9 +756,26 @@
                 icon.textContent = '+';
             }
         }
-        
-        // Submit rating
+
+        // Rating System
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
         async function submitRating() {
+            if (currentRating === 0) {
+                showStatus("Please select a rating before submitting.", "warning");
+                return;
+            }
+
             const suggestion = document.getElementById('suggestion').value.trim();
             
             try {
@@ -631,13 +788,13 @@
                 if (suggestion) {
                     payload.suggestion = suggestion;
                 }
-                
+
                 const response = await fetch(`${API_BASE_URL}/rate-answer`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                
+
                 const result = await response.json();
                 
                 if (result.message) {
@@ -650,28 +807,34 @@
                 showStatus(`API Error: ${error.message}`, "error");
             }
         }
-        
-        // Change user
+
+        // User Management
+        function showUserManagement() {
+            const userMgmt = document.getElementById('userManagement');
+            userMgmt.style.display = userMgmt.style.display === 'none' ? 'block' : 'none';
+        }
+
         async function changeUser() {
             const newUserId = document.getElementById('newUserId').value.trim();
             if (!newUserId) {
                 showStatus("Please enter a new user ID.", "warning");
                 return;
             }
-            
+
             try {
                 const response = await fetch(`${API_BASE_URL}/change-user`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ current_user_id: currentUser, new_user_id: newUserId })
                 });
-                
+
                 const result = await response.json();
                 
                 if (result.message) {
                     currentUser = newUserId;
-                    updateUserDisplay();
+                    document.getElementById('currentUser').textContent = newUserId;
                     showStatus(`Successfully switched to: ${newUserId}`, "success");
+                    document.getElementById('userManagement').style.display = 'none';
                 } else if (result.error) {
                     showStatus(`Error: ${result.error}`, "error");
                 }
@@ -679,98 +842,171 @@
                 showStatus(`API Error: ${error.message}`, "error");
             }
         }
-        
-        // Get active users
-        async function getActiveUsers() {
+
+        async function loadActiveUsers() {
             try {
                 const response = await fetch(`${API_BASE_URL}/get-active-users`);
                 const result = await response.json();
                 
-                const activeUsersDiv = document.getElementById('activeUsers');
-                
                 if (result.active_users) {
+                    const usersDiv = document.getElementById('activeUsers');
                     if (result.active_users.length > 0) {
-                        let html = '<ul style="list-style-type: none; padding: 0;">';
+                        let html = '<h4>Currently Active Users:</h4><ul>';
                         result.active_users.forEach(user => {
-                            html += `<li style="margin: 0.5rem 0; padding: 0.5rem; background: #ffebee; border-radius: 4px;">${user}</li>`;
+                            html += `<li style="margin: 0.5rem 0; color: #667eea;">${user}</li>`;
                         });
                         html += '</ul>';
-                        activeUsersDiv.innerHTML = html;
+                        usersDiv.innerHTML = html;
                     } else {
-                        activeUsersDiv.innerHTML = '<p>No active users found</p>';
+                        usersDiv.innerHTML = '<p style="color: #666;">No active users found</p>';
                     }
                 } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error", "activeUsers");
+                    showStatus(`Error: ${result.error}`, "error");
                 }
             } catch (error) {
-                showStatus(`API Error: ${error.message}`, "error", "activeUsers");
+                showStatus(`API Error: ${error.message}`, "error");
             }
         }
-        
-        // Get chat history
-        async function getChatHistory() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/get-history/${currentUser}`);
-                const result = await response.json();
-                
-                const historyContent = document.getElementById('historyContent');
-                
-                if (result.chats) {
-                    if (Object.keys(result.chats).length > 0) {
-                        let html = '';
-                        Object.entries(result.chats).forEach(([title, chat]) => {
-                            html += `
-                                <div style="margin-bottom: 1.5rem; padding: 1rem; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                    <h4>${title}</h4>
-                                    <p><strong>Question:</strong> ${chat.question}</p>
-                                    <p><strong>Answer:</strong> ${chat.answer}</p>
-                                </div>
-                            `;
-                        });
-                        historyContent.innerHTML = html;
-                    } else {
-                        historyContent.innerHTML = '<p>No chat history found for this user</p>';
+
+        // History Management
+        async function loadHistory() {
+            const historySection = document.getElementById('historySection');
+            historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
+            
+            if (historySection.style.display === 'block') {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/get-history/${currentUser}`);
+                    const result = await response.json();
+                    
+                    if (result.chats) {
+                        const historyContent = document.getElementById('historyContent');
+                        if (Object.keys(result.chats).length > 0) {
+                            let html = '';
+                            Object.entries(result.chats).forEach(([title, chat]) => {
+                                html += `
+                                    <div class="history-item">
+                                        <h4>💬 ${title}</h4>
+                                        <p><strong>Question:</strong><br>${chat.question}</p>
+                                        <p><strong>Answer:</strong><br>${chat.answer}</p>
+                                    </div>
+                                `;
+                            });
+                            historyContent.innerHTML = html;
+                        } else {
+                            historyContent.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No chat history found for this user</p>';
+                        }
+                    } else if (result.error) {
+                        showStatus(`Error: ${result.error}`, "error");
                     }
-                } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error", "historyContent");
+                } catch (error) {
+                    showStatus(`API Error: ${error.message}`, "error");
                 }
-            } catch (error) {
-                showStatus(`API Error: ${error.message}`, "error", "historyContent");
             }
         }
-        
-        // Submit contact message
-        async function submitContactMessage() {
+
+        // Contact Form
+        async function submitContact() {
             const name = document.getElementById('contactName').value.trim();
             const email = document.getElementById('contactEmail').value.trim();
             const message = document.getElementById('contactMessage').value.trim();
-            
+
             if (!name || !email || !message) {
-                showStatus("Please fill out all fields before submitting.", "warning", "contactStatus");
+                showStatus("Please fill out all fields before submitting.", "warning");
                 return;
             }
-            
+
             try {
                 const response = await fetch(`${API_BASE_URL}/contact-us`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, message })
                 });
-                
+
                 const result = await response.json();
                 
                 if (result.message) {
-                    showStatus("Your message was submitted successfully. We'll get back to you soon.", "success", "contactStatus");
+                    showStatus("Your message was submitted successfully. We'll get back to you soon.", "success");
                     // Clear form
                     document.getElementById('contactName').value = '';
                     document.getElementById('contactEmail').value = '';
                     document.getElementById('contactMessage').value = '';
                 } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error", "contactStatus");
+                    showStatus(`Error: ${result.error}`, "error");
                 }
             } catch (error) {
-                showStatus(`API Error: ${error.message}`, "error", "contactStatus");
+                showStatus(`API Error: ${error.message}`, "error");
             }
+        }
+
+        // FAQ Toggle for main FAQ page
+        function toggleFaq(faqNumber) {
+            const answer = document.getElementById(`faq${faqNumber}`);
+            const question = answer.previousElementSibling;
+            const icon = question.querySelector('span');
+            
+            if (answer.style.display === 'none' || !answer.style.display) {
+                answer.style.display = 'block';
+                icon.textContent = '-';
+            } else {
+                answer.style.display = 'none';
+                icon.textContent = '+';
+            }
+        }
+
+        // Status Message Display
+        function showStatus(message, type) {
+            // Remove existing status messages
+            const existingStatus = document.querySelector('.status');
+            if (existingStatus) {
+                existingStatus.remove();
+            }
+
+            // Create new status message
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+
+            // Insert after the chat body
+            const chatBody = document.querySelector('.chat-body');
+            chatBody.appendChild(statusDiv);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (statusDiv.parentNode) {
+                    statusDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test connection on load
+            testConnection();
+            
+            // Set initial user
+            document.getElementById('currentUser').textContent = currentUser;
+        });
+
+        // Mobile menu toggle (for future enhancement)
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        // Add mobile menu button functionality
+        if (window.innerWidth <= 768) {
+            const nav = document.querySelector('.nav');
+            const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.innerHTML = '☰';
+            mobileMenuBtn.style.cssText = `
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #667eea;
+            `;
+            mobileMenuBtn.onclick = toggleMobileMenu;
+            nav.appendChild(mobileMenuBtn);
         }
     </script>
 </body>
