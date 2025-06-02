@@ -594,474 +594,502 @@
     </main>
 
     <script>
-        // API Configuration
-        const API_BASE_URL = "https://xzi0jposzj.execute-api.ap-south-1.amazonaws.com/development";
+// API Configuration
+const API_BASE_URL = "https://xzi0jposzj.execute-api.ap-south-1.amazonaws.com/development";
+
+// State Management
+let currentUser = "user_1234";
+let apiConnected = false;
+let lastQuestion = "";
+let lastResponse = "";
+let currentRating = 0;
+
+// Page Navigation
+function showPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    // Show selected page
+    document.getElementById(pageId).classList.add('active');
+    
+    // Update navigation
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Load FAQs when FAQ page is shown
+    if (pageId === 'faq') {
+        loadAllFAQs();
+    }
+}
+
+// API Functions
+async function testConnection() {
+    showStatus("Testing connection...", "info");
+    try {
+        const response = await fetch(`${API_BASE_URL}/get-active-users`, { timeout: 5000 });
+        if (response.ok) {
+            apiConnected = true;
+            showStatus("✅ Successfully connected to API", "success");
+        } else {
+            throw new Error("Connection failed");
+        }
+    } catch (error) {
+        apiConnected = false;
+        showStatus("❌ Connection failed. Please check API status.", "error");
+    }
+}
+
+async function sendMessage() {
+    const question = document.getElementById('question').value.trim();
+    if (!question) {
+        showStatus("Please enter a question.", "warning");
+        return;
+    }
+
+    if (!apiConnected) {
+        showStatus("Please test API connection first.", "warning");
+        return;
+    }
+
+    // Show loading
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('response').style.display = 'none';
+    document.getElementById('faqs').style.display = 'none';
+    document.getElementById('rating').style.display = 'none';
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: currentUser, question: question })
+        });
+
+        const result = await response.json();
+        document.getElementById('loading').style.display = 'none';
+
+        if (result.answer) {
+            // Clean and display answer
+            const uniqueLines = [...new Set(result.answer.split('\n'))];
+            const cleanedAnswer = uniqueLines.join('\n');
+            
+            document.getElementById('responseContent').innerHTML = cleanedAnswer.replace(/\n/g, '<br>');
+            document.getElementById('response').style.display = 'block';
+
+            // Display FAQs if available
+            if (result.faqs && result.faqs.length > 0) {
+                displayFaqs(result.faqs, result.faq_intro);
+            }
+
+            // Store for rating
+            lastQuestion = question;
+            lastResponse = cleanedAnswer;
+            document.getElementById('rating').style.display = 'block';
+            
+            // Clear question
+            document.getElementById('question').value = '';
+        } else if (result.error) {
+            showStatus(`Error: ${result.error}`, "error");
+        }
+    } catch (error) {
+        document.getElementById('loading').style.display = 'none';
+        showStatus(`API Error: ${error.message}`, "error");
+    }
+}
+
+function displayFaqs(faqs, intro) {
+    const faqContent = document.getElementById('faqContent');
+    let html = '';
+    
+    if (intro) {
+        html += `<h4>${intro}</h4>`;
+    }
+    
+    faqs.forEach((faq, index) => {
+        html += `
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleChatFaq(${index})">
+                    ${faq.question}
+                    <span>+</span>
+                </div>
+                <div class="faq-answer" id="chatFaq${index}">
+                    <strong>Q:</strong> ${faq.question}<br>
+                    <strong>A:</strong> ${faq.answer}
+                </div>
+            </div>
+        `;
+    });
+    
+    faqContent.innerHTML = html;
+    document.getElementById('faqs').style.display = 'block';
+}
+
+function toggleChatFaq(index) {
+    const answer = document.getElementById(`chatFaq${index}`);
+    const question = answer.previousElementSibling;
+    const icon = question.querySelector('span');
+    
+    if (answer.style.display === 'none' || !answer.style.display) {
+        answer.style.display = 'block';
+        icon.textContent = '-';
+    } else {
+        answer.style.display = 'none';
+        icon.textContent = '+';
+    }
+}
+
+// Rating System
+function setRating(rating) {
+    currentRating = rating;
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+}
+
+async function submitRating() {
+    if (currentRating === 0) {
+        showStatus("Please select a rating before submitting.", "warning");
+        return;
+    }
+
+    const suggestion = document.getElementById('suggestion').value.trim();
+    
+    try {
+        const payload = {
+            user_id: currentUser,
+            question: lastQuestion,
+            rating: currentRating
+        };
         
-        // State Management
-        let currentUser = "user_1234";
-        let apiConnected = false;
-        let lastQuestion = "";
-        let lastResponse = "";
-        let currentRating = 0;
-
-        // Page Navigation
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show selected page
-            document.getElementById(pageId).classList.add('active');
-            
-            // Update navigation
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.classList.remove('active');
-            });
-            event.target.classList.add('active');
+        if (suggestion) {
+            payload.suggestion = suggestion;
         }
 
-        // API Functions
-        async function testConnection() {
-            showStatus("Testing connection...", "info");
-            try {
-                const response = await fetch(`${API_BASE_URL}/get-active-users`, { timeout: 5000 });
-                if (response.ok) {
-                    apiConnected = true;
-                    showStatus("✅ Successfully connected to API", "success");
-                } else {
-                    throw new Error("Connection failed");
-                }
-            } catch (error) {
-                apiConnected = false;
-                showStatus("❌ Connection failed. Please check API status.", "error");
-            }
-        }
+        const response = await fetch(`${API_BASE_URL}/rate-answer`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-        async function sendMessage() {
-            const question = document.getElementById('question').value.trim();
-            if (!question) {
-                showStatus("Please enter a question.", "warning");
-                return;
-            }
-
-            if (!apiConnected) {
-                showStatus("Please test API connection first.", "warning");
-                return;
-            }
-
-            // Show loading
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('response').style.display = 'none';
-            document.getElementById('faqs').style.display = 'none';
+        const result = await response.json();
+        
+        if (result.message) {
+            showStatus("Rating and suggestion submitted. We appreciate your feedback! 🙂", "success");
             document.getElementById('rating').style.display = 'none';
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/chat`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: currentUser, question: question })
-                });
-
-                const result = await response.json();
-                document.getElementById('loading').style.display = 'none';
-
-                if (result.answer) {
-                    // Clean and display answer
-                    const uniqueLines = [...new Set(result.answer.split('\n'))];
-                    const cleanedAnswer = uniqueLines.join('\n');
-                    
-                    document.getElementById('responseContent').innerHTML = cleanedAnswer.replace(/\n/g, '<br>');
-                    document.getElementById('response').style.display = 'block';
-
-                    // Display FAQs if available
-                    if (result.faqs && result.faqs.length > 0) {
-                        displayFaqs(result.faqs, result.faq_intro);
-                    }
-
-                    // Store for rating
-                    lastQuestion = question;
-                    lastResponse = cleanedAnswer;
-                    document.getElementById('rating').style.display = 'block';
-                    
-                    // Clear question
-                    document.getElementById('question').value = '';
-                } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error");
-                }
-            } catch (error) {
-                document.getElementById('loading').style.display = 'none';
-                showStatus(`API Error: ${error.message}`, "error");
-            }
+        } else if (result.error) {
+            showStatus(`Error: ${result.error}`, "error");
         }
+    } catch (error) {
+        showStatus(`API Error: ${error.message}`, "error");
+    }
+}
 
-        function displayFaqs(faqs, intro) {
-            const faqContent = document.getElementById('faqContent');
-            let html = '';
-            
-            if (intro) {
-                html += `<h4>${intro}</h4>`;
+// User Management
+function showUserManagement() {
+    const userMgmt = document.getElementById('userManagement');
+    userMgmt.style.display = userMgmt.style.display === 'none' ? 'block' : 'none';
+}
+
+async function changeUser() {
+    const newUserId = document.getElementById('newUserId').value.trim();
+    if (!newUserId) {
+        showStatus("Please enter a new user ID.", "warning");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/change-user`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ current_user_id: currentUser, new_user_id: newUserId })
+        });
+
+        const result = await response.json();
+        
+        if (result.message) {
+            currentUser = newUserId;
+            document.getElementById('currentUser').textContent = newUserId;
+            showStatus(`Successfully switched to: ${newUserId}`, "success");
+            document.getElementById('userManagement').style.display = 'none';
+        } else if (result.error) {
+            showStatus(`Error: ${result.error}`, "error");
+        }
+    } catch (error) {
+        showStatus(`API Error: ${error.message}`, "error");
+    }
+}
+
+async function loadActiveUsers() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get-active-users`);
+        const result = await response.json();
+        
+        if (result.active_users) {
+            const usersDiv = document.getElementById('activeUsers');
+            if (result.active_users.length > 0) {
+                let html = '<h4>Currently Active Users:</h4><ul>';
+                result.active_users.forEach(user => {
+                    html += `<li style="margin: 0.5rem 0; color: #667eea;">${user}</li>`;
+                });
+                html += '</ul>';
+                usersDiv.innerHTML = html;
+            } else {
+                usersDiv.innerHTML = '<p style="color: #666;">No active users found</p>';
             }
+        } else if (result.error) {
+            showStatus(`Error: ${result.error}`, "error");
+        }
+    } catch (error) {
+        showStatus(`API Error: ${error.message}`, "error");
+    }
+}
+
+// History Management
+async function loadHistory() {
+    const historySection = document.getElementById('historySection');
+    historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
+    
+    if (historySection.style.display === 'block') {
+        try {
+            const response = await fetch(`${API_BASE_URL}/get-history/${currentUser}`);
+            const result = await response.json();
             
-            faqs.forEach((faq, index) => {
+            if (result.chats) {
+                const historyContent = document.getElementById('historyContent');
+                if (Object.keys(result.chats).length > 0) {
+                    let html = '';
+                    Object.entries(result.chats).forEach(([title, chat]) => {
+                        html += `
+                            <div class="history-item">
+                                <h4>💬 ${title}</h4>
+                                <p><strong>Question:</strong><br>${chat.question}</p>
+                                <p><strong>Answer:</strong><br>${chat.answer}</p>
+                            </div>
+                        `;
+                    });
+                    historyContent.innerHTML = html;
+                } else {
+                    historyContent.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No chat history found for this user</p>';
+                }
+            } else if (result.error) {
+                showStatus(`Error: ${result.error}`, "error");
+            }
+        } catch (error) {
+            showStatus(`API Error: ${error.message}`, "error");
+        }
+    }
+}
+
+// Contact Form
+async function submitContact() {
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+
+    if (!name || !email || !message) {
+        showStatus("Please fill out all fields before submitting.", "warning");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/contact-us`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
+        });
+
+        const result = await response.json();
+        
+        if (result.message) {
+            showStatus("Your message was submitted successfully. We'll get back to you soon.", "success");
+            // Clear form
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactMessage').value = '';
+        } else if (result.error) {
+            showStatus(`Error: ${result.error}`, "error");
+        }
+    } catch (error) {
+        showStatus(`API Error: ${error.message}`, "error");
+    }
+}
+
+// Status Message Display
+function showStatus(message, type) {
+    // Remove existing status messages
+    const existingStatus = document.querySelector('.status');
+    if (existingStatus) {
+        existingStatus.remove();
+    }
+
+    // Create new status message
+    const statusDiv = document.createElement('div');
+    statusDiv.className = `status ${type}`;
+    statusDiv.innerHTML = message;
+
+    // Insert after the chat body or main content area
+    const targetElement = document.querySelector('.chat-body') || document.querySelector('.main-content') || document.body;
+    targetElement.appendChild(statusDiv);
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (statusDiv.parentNode) {
+            statusDiv.remove();
+        }
+    }, 5000);
+}
+
+// FAQ Functions - UPDATED AND FIXED
+async function loadAllFAQs() {
+    const container = document.getElementById('allFAQsContainer');
+    if (!container) return;
+    
+    // Show loading state
+    container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #667eea;">Loading FAQs...</div>';
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/all-faqs`);
+        const result = await response.json();
+        
+        if (result.topics && Object.keys(result.topics).length > 0) {
+            displayAllFAQs(result.topics);
+        } else if (result.error) {
+            container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #e74c3c;">Error loading FAQs: ${result.error}</div>`;
+        } else {
+            container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666;">No FAQs available at the moment.</div>';
+        }
+    } catch (error) {
+        container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #e74c3c;">Failed to load FAQs: ${error.message}</div>`;
+    }
+}
+
+function displayAllFAQs(topics) {
+    const container = document.getElementById('allFAQsContainer');
+    let html = '';
+    
+    Object.entries(topics).forEach(([topic, faqs], topicIndex) => {
+        html += `<div class="faq-topic-section">`;
+        html += `<h3 style="color: #667eea; margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid #e8f2ff;">${topic}</h3>`;
+        
+        if (Array.isArray(faqs) && faqs.length > 0) {
+            faqs.forEach((faq, faqIndex) => {
+                const uniqueId = `topic${topicIndex}_faq${faqIndex}`;
                 html += `
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleChatFaq(${index})">
-                            ${faq.question}
-                            <span>+</span>
+                    <div class="faq-item" style="margin-bottom: 1rem; border: 1px solid #e8f2ff; border-radius: 8px; overflow: hidden;">
+                        <div class="faq-question" onclick="toggleDynamicFaq('${uniqueId}')" style="padding: 1rem; background: #f8faff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; color: #333;">
+                            <span>${faq.question}</span>
+                            <span class="toggle-icon" style="font-size: 1.2rem; color: #667eea;">+</span>
                         </div>
-                        <div class="faq-answer" id="chatFaq${index}">
-                            <strong>Q:</strong> ${faq.question}<br>
-                            <strong>A:</strong> ${faq.answer}
+                        <div class="faq-answer" id="${uniqueId}" style="display: none; padding: 1rem; background: white; border-top: 1px solid #e8f2ff; line-height: 1.6;">
+                            ${faq.answer}
                         </div>
                     </div>
                 `;
             });
-            
-            faqContent.innerHTML = html;
-            document.getElementById('faqs').style.display = 'block';
+        } else {
+            html += '<p style="color: #666; font-style: italic;">No questions available for this topic.</p>';
         }
+        
+        html += `</div>`;
+    });
+    
+    container.innerHTML = html;
+}
 
-        function toggleChatFaq(index) {
-            const answer = document.getElementById(`chatFaq${index}`);
-            const question = answer.previousElementSibling;
-            const icon = question.querySelector('span');
-            
-            if (answer.style.display === 'none' || !answer.style.display) {
-                answer.style.display = 'block';
-                icon.textContent = '-';
-            } else {
-                answer.style.display = 'none';
-                icon.textContent = '+';
-            }
-        }
+async function searchFAQ() {
+    const question = document.getElementById('faqSearch').value.trim();
+    const answerDiv = document.getElementById('faqAnswer');
+    const contentDiv = document.getElementById('faqAnswerContent');
+    
+    if (!question) {
+        showStatus("Please enter a question to search.", "warning");
+        return;
+    }
 
-        // Rating System
-        function setRating(rating) {
-            currentRating = rating;
-            const stars = document.querySelectorAll('.star');
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-        }
+    // Show loading state
+    contentDiv.innerHTML = '<div style="text-align: center; padding: 1rem; color: #667eea;">Searching...</div>';
+    answerDiv.style.display = 'block';
 
-        async function submitRating() {
-            if (currentRating === 0) {
-                showStatus("Please select a rating before submitting.", "warning");
-                return;
-            }
-
-            const suggestion = document.getElementById('suggestion').value.trim();
-            
-            try {
-                const payload = {
-                    user_id: currentUser,
-                    question: lastQuestion,
-                    rating: currentRating
-                };
-                
-                if (suggestion) {
-                    payload.suggestion = suggestion;
-                }
-
-                const response = await fetch(`${API_BASE_URL}/rate-answer`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                
-                if (result.message) {
-                    showStatus("Rating and suggestion submitted. We appreciate your feedback! 🙂", "success");
-                    document.getElementById('rating').style.display = 'none';
-                } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error");
-                }
-            } catch (error) {
-                showStatus(`API Error: ${error.message}`, "error");
-            }
-        }
-
-        // User Management
-        function showUserManagement() {
-            const userMgmt = document.getElementById('userManagement');
-            userMgmt.style.display = userMgmt.style.display === 'none' ? 'block' : 'none';
-        }
-
-        async function changeUser() {
-            const newUserId = document.getElementById('newUserId').value.trim();
-            if (!newUserId) {
-                showStatus("Please enter a new user ID.", "warning");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/change-user`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ current_user_id: currentUser, new_user_id: newUserId })
-                });
-
-                const result = await response.json();
-                
-                if (result.message) {
-                    currentUser = newUserId;
-                    document.getElementById('currentUser').textContent = newUserId;
-                    showStatus(`Successfully switched to: ${newUserId}`, "success");
-                    document.getElementById('userManagement').style.display = 'none';
-                } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error");
-                }
-            } catch (error) {
-                showStatus(`API Error: ${error.message}`, "error");
-            }
-        }
-
-        async function loadActiveUsers() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/get-active-users`);
-                const result = await response.json();
-                
-                if (result.active_users) {
-                    const usersDiv = document.getElementById('activeUsers');
-                    if (result.active_users.length > 0) {
-                        let html = '<h4>Currently Active Users:</h4><ul>';
-                        result.active_users.forEach(user => {
-                            html += `<li style="margin: 0.5rem 0; color: #667eea;">${user}</li>`;
-                        });
-                        html += '</ul>';
-                        usersDiv.innerHTML = html;
-                    } else {
-                        usersDiv.innerHTML = '<p style="color: #666;">No active users found</p>';
-                    }
-                } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error");
-                }
-            } catch (error) {
-                showStatus(`API Error: ${error.message}`, "error");
-            }
-        }
-
-        // History Management
-        async function loadHistory() {
-            const historySection = document.getElementById('historySection');
-            historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
-            
-            if (historySection.style.display === 'block') {
-                try {
-                    const response = await fetch(`${API_BASE_URL}/get-history/${currentUser}`);
-                    const result = await response.json();
-                    
-                    if (result.chats) {
-                        const historyContent = document.getElementById('historyContent');
-                        if (Object.keys(result.chats).length > 0) {
-                            let html = '';
-                            Object.entries(result.chats).forEach(([title, chat]) => {
-                                html += `
-                                    <div class="history-item">
-                                        <h4>💬 ${title}</h4>
-                                        <p><strong>Question:</strong><br>${chat.question}</p>
-                                        <p><strong>Answer:</strong><br>${chat.answer}</p>
-                                    </div>
-                                `;
-                            });
-                            historyContent.innerHTML = html;
-                        } else {
-                            historyContent.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No chat history found for this user</p>';
-                        }
-                    } else if (result.error) {
-                        showStatus(`Error: ${result.error}`, "error");
-                    }
-                } catch (error) {
-                    showStatus(`API Error: ${error.message}`, "error");
-                }
-            }
-        }
-
-        // Contact Form
-        async function submitContact() {
-            const name = document.getElementById('contactName').value.trim();
-            const email = document.getElementById('contactEmail').value.trim();
-            const message = document.getElementById('contactMessage').value.trim();
-
-            if (!name || !email || !message) {
-                showStatus("Please fill out all fields before submitting.", "warning");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/contact-us`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, message })
-                });
-
-                const result = await response.json();
-                
-                if (result.message) {
-                    showStatus("Your message was submitted successfully. We'll get back to you soon.", "success");
-                    // Clear form
-                    document.getElementById('contactName').value = '';
-                    document.getElementById('contactEmail').value = '';
-                    document.getElementById('contactMessage').value = '';
-                } else if (result.error) {
-                    showStatus(`Error: ${result.error}`, "error");
-                }
-            } catch (error) {
-                showStatus(`API Error: ${error.message}`, "error");
-            }
-        }
-
-        // FAQ Toggle for main FAQ page
-        function toggleFaq(faqNumber) {
-            const answer = document.getElementById(`faq${faqNumber}`);
-            const question = answer.previousElementSibling;
-            const icon = question.querySelector('span');
-            
-            if (answer.style.display === 'none' || !answer.style.display) {
-                answer.style.display = 'block';
-                icon.textContent = '-';
-            } else {
-                answer.style.display = 'none';
-                icon.textContent = '+';
-            }
-        }
-
-        // Status Message Display
-        function showStatus(message, type) {
-            // Remove existing status messages
-            const existingStatus = document.querySelector('.status');
-            if (existingStatus) {
-                existingStatus.remove();
-            }
-
-            // Create new status message
-            const statusDiv = document.createElement('div');
-            statusDiv.className = `status ${type}`;
-            statusDiv.innerHTML = message;
-
-            // Insert after the chat body
-            const chatBody = document.querySelector('.chat-body');
-            chatBody.appendChild(statusDiv);
-
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                if (statusDiv.parentNode) {
-                    statusDiv.remove();
-                }
-            }, 5000);
-        }
-
-            // FAQ Functions
-            async function loadAllFAQs() {
-                try {
-                    const response = await fetch(`${API_BASE_URL}/all-faqs`);
-                    const result = await response.json();
-                    
-                    if (result.topics) {
-                        displayAllFAQs(result.topics);
-                    } else if (result.error) {
-                        showStatus(`Error: ${result.error}`, "error");
-                    }
-                } catch (error) {
-                    showStatus(`API Error: ${error.message}`, "error");
-                }
-            }
-
-            function displayAllFAQs(topics) {
-                const container = document.getElementById('allFAQsContainer');
-                let html = '<h2>All FAQ Topics</h2>';
-                
-                Object.entries(topics).forEach(([topic, faqs], topicIndex) => {
-                    html += `<h3 style="color: #667eea; margin-top: 2rem;">${topic}</h3>`;
-                    
-                    faqs.forEach((faq, faqIndex) => {
-                        const uniqueId = `topic${topicIndex}_faq${faqIndex}`;
-                        html += `
-                            <div class="faq-item">
-                                <div class="faq-question" onclick="toggleDynamicFaq('${uniqueId}')">
-                                    ${faq.question}
-                                    <span>+</span>
-                                </div>
-                                <div class="faq-answer" id="${uniqueId}" style="display: none;">
-                                    ${faq.answer}
-                                </div>
-                            </div>
-                        `;
-                    });
-                });
-                
-                container.innerHTML = html;
-            }
-
-            async function searchFAQ() {
-                const question = document.getElementById('faqSearch').value.trim();
-                if (!question) {
-                    showStatus("Please enter a question.", "warning");
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/faq-answer`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ question: question })
-                    });
-
-                    const result = await response.json();
-                    
-                    if (result.answer) {
-                        document.getElementById('faqAnswerContent').innerHTML = result.answer.replace(/\n/g, '<br>');
-                        document.getElementById('faqAnswer').style.display = 'block';
-                    } else if (result.error) {
-                        showStatus(`Error: ${result.error}`, "error");
-                    }
-                } catch (error) {
-                    showStatus(`API Error: ${error.message}`, "error");
-                }
-            }
-
-            function toggleDynamicFaq(faqId) {
-                const answer = document.getElementById(faqId);
-                const question = answer.previousElementSibling;
-                const icon = question.querySelector('span');
-                
-                if (answer.style.display === 'none') {
-                    answer.style.display = 'block';
-                    icon.textContent = '-';
-                } else {
-                    answer.style.display = 'none';
-                    icon.textContent = '+';
-                }
-            }
-
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            // Test connection on load
-            testConnection();
-            
-            // Add after testConnection();
-            loadAllFAQs();
-            
-            // Set initial user
-            document.getElementById('currentUser').textContent = currentUser;
+    try {
+        const response = await fetch(`${API_BASE_URL}/faq-answer`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: question })
         });
 
-        // Mobile menu toggle (for future enhancement)
-        function toggleMobileMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+        const result = await response.json();
+        
+        if (result.answer) {
+            contentDiv.innerHTML = result.answer.replace(/\n/g, '<br>');
+        } else if (result.error) {
+            contentDiv.innerHTML = `<div style="color: #e74c3c;">Error: ${result.error}</div>`;
+        } else {
+            contentDiv.innerHTML = '<div style="color: #666;">No answer found for your question.</div>';
         }
+    } catch (error) {
+        contentDiv.innerHTML = `<div style="color: #e74c3c;">Search failed: ${error.message}</div>`;
+    }
+}
 
-        // Add mobile menu button functionality
-        if (window.innerWidth <= 768) {
-            const nav = document.querySelector('.nav');
+function toggleDynamicFaq(faqId) {
+    const answer = document.getElementById(faqId);
+    const question = answer.previousElementSibling;
+    const icon = question.querySelector('.toggle-icon');
+    
+    if (answer.style.display === 'none' || !answer.style.display) {
+        answer.style.display = 'block';
+        icon.textContent = '-';
+    } else {
+        answer.style.display = 'none';
+        icon.textContent = '+';
+    }
+}
+
+function clearFAQResults() {
+    document.getElementById('faqSearch').value = '';
+    document.getElementById('faqAnswer').style.display = 'none';
+}
+
+// Initialize app
+document.addEventListener('DOMContentLoaded', function() {
+    // Test connection on load
+    testConnection();
+    
+    // Set initial user
+    const currentUserElement = document.getElementById('currentUser');
+    if (currentUserElement) {
+        currentUserElement.textContent = currentUser;
+    }
+    
+    // Load FAQs if we're on the FAQ page initially
+    if (document.getElementById('faq') && document.getElementById('faq').classList.contains('active')) {
+        loadAllFAQs();
+    }
+});
+
+// Mobile menu toggle (for future enhancement)
+function toggleMobileMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) {
+        navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+    }
+}
+
+// Add mobile menu button functionality
+window.addEventListener('resize', function() {
+    if (window.innerWidth <= 768) {
+        const nav = document.querySelector('.nav');
+        if (nav && !nav.querySelector('.mobile-menu-btn')) {
             const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.className = 'mobile-menu-btn';
             mobileMenuBtn.innerHTML = '☰';
             mobileMenuBtn.style.cssText = `
                 background: none;
@@ -1069,10 +1097,22 @@
                 font-size: 1.5rem;
                 cursor: pointer;
                 color: #667eea;
+                display: block;
             `;
             mobileMenuBtn.onclick = toggleMobileMenu;
             nav.appendChild(mobileMenuBtn);
         }
+    } else {
+        const mobileBtn = document.querySelector('.mobile-menu-btn');
+        if (mobileBtn) {
+            mobileBtn.remove();
+        }
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+            navLinks.style.display = 'flex';
+        }
+    }
+});
     </script>
 </body>
 </html>
