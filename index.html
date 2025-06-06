@@ -242,6 +242,14 @@
             line-height: 1.6;
         }
         
+        .faq-answer.active {
+            display: block;
+        }
+        
+        .faq-question .arrow.rotated {
+            transform: rotate(180deg);
+        }
+        
         /* Rating */
         .rating-container {
             background: white;
@@ -452,7 +460,7 @@
                             <div id="responseContent"></div>
                         </div>
 
-                        <div id="faqs" style="display: none;">
+                        <div id="chatFaqs" style="display: none;">
                             <h3>Related FAQs:</h3>
                             <div id="faqContent"></div>
                         </div>
@@ -526,34 +534,138 @@
             <!-- FAQs Page -->
             <div id="faqs" class="page">
                 <div class="content-page">
-                    <h1>Frequently Asked Questions</h1>
-                    
-                    <!-- Search FAQ Section -->
-                    <div class="input-group">
-                        <label for="faqSearch">Search FAQs or Ask a Question:</label>
-                        <textarea id="faqSearch" rows="3" placeholder="Type your question here..."></textarea>
+                    <h1>IMG Counselor FAQ</h1>
+                    <p>Comprehensive guide for International Medical Graduates</p>
+
+                    <div class="faq-section">
+                        <h2>ECFMG Certification & Basic Eligibility</h2>
+                        <div class="faq-item">
+                            <div class="faq-question" onsiteclick="toggleFAQ(this)">
+                                What is ECFMG Certification and why is it essential for IMGs?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                ECFMG (Educational Commission for Foreign Medical Graduates) Certification is mandatory for all International Medical Graduates to be eligible for US residency programs. It verifies your medical education credentials, ensures you meet US standards, and serves as a prerequisite for the NRMP Match. Without ECFMG certification, you cannot participate in the residency match process.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                What are the USMLE exams I need to pass for ECFMG Certification?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                You must pass USMLE Step 1 and Step 2 CK (Clinical Knowledge) for ECFMG certification. Step 1 tests basic medical sciences, while Step 2 CK evaluates clinical knowledge and patient care skills. Step 3 is not required for certification but may be needed for certain visa types or programs.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                How long does the ECFMG certification process typically take?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                The ECFMG certification process typically takes 4-8 weeks after all requirements are met. This includes credential verification, exam score reporting, and final certificate issuance. However, delays can occur due to document verification issues or high application volumes.
+                            </div>
+                        </div>
                     </div>
-                    <button class="btn" onclick="searchFAQ()">Search FAQ</button>
-                    <button class="btn btn-secondary" onclick="loadAllFAQs()">Load All FAQs</button>
-                    <button class="btn btn-secondary" onclick="clearFAQResults()">Clear Results</button>
-                    
-                    <!-- Loading Spinner for FAQs -->
-                    <div id="faqLoading" style="display: none;">
-                        <div class="spinner"></div>
-                        <p style="text-align: center;">Loading FAQs...</p>
+
+                    <div class="faq-section">
+                        <h2>USMLE Exams</h2>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                What is a competitive USMLE score for IMGs?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                For IMGs, competitive scores vary by specialty: Step 1: 240+ (highly competitive), 220-240 (competitive), 200-220 (acceptable for some programs). Step 2 CK: 250+ (excellent), 240-250 (very good), 230-240 (good). Remember, Step 1 is now Pass/Fail, making Step 2 CK scores more critical.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                How many attempts do I have for each USMLE Step?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                You have 6 attempts for each USMLE Step within a 7-year period. Multiple attempts can impact your application negatively, so thorough preparation is crucial. Programs often view first-attempt passes more favorably than multiple attempts.
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- FAQ Answer Section -->
-                    <div id="faqAnswer" class="response-area" style="display: none;">
-                        <h3>Answer:</h3>
-                        <div id="faqAnswerContent"></div>
+
+                    <div class="faq-section">
+                        <h2>US Clinical Experience (USCE)</h2>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                What is US Clinical Experience and why is it important?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                USCE refers to clinical rotations, observerships, or research experiences in US healthcare settings. It's crucial for IMGs as it demonstrates familiarity with the US healthcare system, provides networking opportunities, and helps secure strong letters of recommendation from US physicians.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                Which types of USCE are most valued?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                Hands-on clinical rotations (externships/sub-internships) are most valued, followed by observerships with meaningful patient interaction. Research experiences in US institutions are also valuable, especially if they lead to publications. Avoid purely observational experiences with minimal interaction.
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- All FAQs Container -->
-                    <div id="allFAQsContainer" style="margin-top: 2rem;">
-                        <!-- Dynamic FAQ content will be loaded here -->
-                        <div style="text-align: center; color: #666; padding: 2rem;">
-                            <p>Click "Load All FAQs" to see all available questions and answers, or use the search box above to find specific information.</p>
+
+                    <div class="faq-section">
+                        <h2>Application Process (ERAS)</h2>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                What documents are required for ERAS application?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                Required documents include: Common Application Form, Personal Statement, Letters of Recommendation (3-4), MSPE/Dean's Letter, Medical School Transcript, USMLE Transcript, ECFMG Status Report, Professional Photo, and CV. Some programs may require additional specialty-specific documents.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                How many programs should an IMG typically apply to?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                IMGs typically apply to 80-150 programs depending on their competitiveness and specialty choice. Highly competitive specialties may require 150+ applications, while primary care specialties might need 80-120. Quality over quantity is important - research programs thoroughly.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-section">
+                        <h2>Interview Process & Match</h2>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                How should I prepare for residency interviews as an IMG?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                Prepare by researching each program thoroughly, practicing common questions (Why this specialty? Why our program? Tell me about yourself), preparing stories that highlight your strengths, understanding current healthcare issues, and being ready to address any gaps or weaknesses in your application professionally.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                What happens if I don't match in the main match?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                If you don't match, you can participate in SOAP (Supplemental Offer and Acceptance Program) immediately after Match Day. If unsuccessful in SOAP, options include taking a research year, gaining more USCE, improving USMLE scores, considering preliminary/transitional year programs, or applying again next cycle.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-section">
+                        <h2>Visas for Residency</h2>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                What are the common visa types for IMG residency?
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="faq-answer">
+                                The two main visa types are J-1 and H-1B. J-1 is more common, easier to obtain, but requires returning to home country for 2 years after training (unless waived). H-1B allows dual intent (path to green card) but is harder to obtain and requires Step 3 passage before residency.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -594,525 +706,436 @@
     </main>
 
     <script>
-// API Configuration
-const API_BASE_URL = "https://xzi0jposzj.execute-api.ap-south-1.amazonaws.com/development";
+        // API Configuration
+        const API_BASE_URL = "https://xzi0jposzj.execute-api.ap-south-1.amazonaws.com/development";
 
-// State Management
-let currentUser = "user_1234";
-let apiConnected = false;
-let lastQuestion = "";
-let lastResponse = "";
-let currentRating = 0;
+        // State Management
+        let currentUser = "user_1234";
+        let apiConnected = false;
+        let lastQuestion = "";
+        let lastResponse = "";
+        let currentRating = 0;
 
-// Page Navigation
-function showPage(pageId) {
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
-    
-    // Show selected page
-    document.getElementById(pageId).classList.add('active');
-    
-    // Update navigation
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.classList.remove('active');
-    });
-    event.target.classList.add('active');
-    
-    // Load FAQs when FAQ page is shown
-    if (pageId === 'faq') {
-        loadAllFAQs();
-    }
-}
-
-// API Functions
-async function testConnection() {
-    showStatus("Testing connection...", "info");
-    try {
-        const response = await fetch(`${API_BASE_URL}/get-active-users`, { timeout: 5000 });
-        if (response.ok) {
-            apiConnected = true;
-            showStatus("✅ Successfully connected to API", "success");
-        } else {
-            throw new Error("Connection failed");
-        }
-    } catch (error) {
-        apiConnected = false;
-        showStatus("❌ Connection failed. Please check API status.", "error");
-    }
-}
-
-async function sendMessage() {
-    const question = document.getElementById('question').value.trim();
-    if (!question) {
-        showStatus("Please enter a question.", "warning");
-        return;
-    }
-
-    if (!apiConnected) {
-        showStatus("Please test API connection first.", "warning");
-        return;
-    }
-
-    // Show loading
-    document.getElementById('loading').style.display = 'block';
-    document.getElementById('response').style.display = 'none';
-    document.getElementById('faqs').style.display = 'none';
-    document.getElementById('rating').style.display = 'none';
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/chat`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user_id: currentUser, question: question })
-        });
-
-        const result = await response.json();
-        document.getElementById('loading').style.display = 'none';
-
-        if (result.answer) {
-            // Clean and display answer
-            const uniqueLines = [...new Set(result.answer.split('\n'))];
-            const cleanedAnswer = uniqueLines.join('\n');
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
             
-            document.getElementById('responseContent').innerHTML = cleanedAnswer.replace(/\n/g, '<br>');
-            document.getElementById('response').style.display = 'block';
-
-            // Display FAQs if available
-            if (result.faqs && result.faqs.length > 0) {
-                displayFaqs(result.faqs, result.faq_intro);
-            }
-
-            // Store for rating
-            lastQuestion = question;
-            lastResponse = cleanedAnswer;
-            document.getElementById('rating').style.display = 'block';
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
             
-            // Clear question
-            document.getElementById('question').value = '';
-        } else if (result.error) {
-            showStatus(`Error: ${result.error}`, "error");
-        }
-    } catch (error) {
-        document.getElementById('loading').style.display = 'none';
-        showStatus(`API Error: ${error.message}`, "error");
-    }
-}
-
-function displayFaqs(faqs, intro) {
-    const faqContent = document.getElementById('faqContent');
-    let html = '';
-    
-    if (intro) {
-        html += `<h4>${intro}</h4>`;
-    }
-    
-    faqs.forEach((faq, index) => {
-        html += `
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleChatFaq(${index})">
-                    ${faq.question}
-                    <span>+</span>
-                </div>
-                <div class="faq-answer" id="chatFaq${index}">
-                    <strong>Q:</strong> ${faq.question}<br>
-                    <strong>A:</strong> ${faq.answer}
-                </div>
-            </div>
-        `;
-    });
-    
-    faqContent.innerHTML = html;
-    document.getElementById('faqs').style.display = 'block';
-}
-
-function toggleChatFaq(index) {
-    const answer = document.getElementById(`chatFaq${index}`);
-    const question = answer.previousElementSibling;
-    const icon = question.querySelector('span');
-    
-    if (answer.style.display === 'none' || !answer.style.display) {
-        answer.style.display = 'block';
-        icon.textContent = '-';
-    } else {
-        answer.style.display = 'none';
-        icon.textContent = '+';
-    }
-}
-
-// Rating System
-function setRating(rating) {
-    currentRating = rating;
-    const stars = document.querySelectorAll('.star');
-    stars.forEach((star, index) => {
-        if (index < rating) {
-            star.classList.add('active');
-        } else {
-            star.classList.remove('active');
-        }
-    });
-}
-
-async function submitRating() {
-    if (currentRating === 0) {
-        showStatus("Please select a rating before submitting.", "warning");
-        return;
-    }
-
-    const suggestion = document.getElementById('suggestion').value.trim();
-    
-    try {
-        const payload = {
-            user_id: currentUser,
-            question: lastQuestion,
-            rating: currentRating
-        };
-        
-        if (suggestion) {
-            payload.suggestion = suggestion;
+            // Update navigation
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`.nav-links a[onclick="showPage('${pageId}')"]`).classList.add('active');
         }
 
-        const response = await fetch(`${API_BASE_URL}/rate-answer`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-        
-        if (result.message) {
-            showStatus("Rating and suggestion submitted. We appreciate your feedback! 🙂", "success");
-            document.getElementById('rating').style.display = 'none';
-        } else if (result.error) {
-            showStatus(`Error: ${result.error}`, "error");
-        }
-    } catch (error) {
-        showStatus(`API Error: ${error.message}`, "error");
-    }
-}
-
-// User Management
-function showUserManagement() {
-    const userMgmt = document.getElementById('userManagement');
-    userMgmt.style.display = userMgmt.style.display === 'none' ? 'block' : 'none';
-}
-
-async function changeUser() {
-    const newUserId = document.getElementById('newUserId').value.trim();
-    if (!newUserId) {
-        showStatus("Please enter a new user ID.", "warning");
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/change-user`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ current_user_id: currentUser, new_user_id: newUserId })
-        });
-
-        const result = await response.json();
-        
-        if (result.message) {
-            currentUser = newUserId;
-            document.getElementById('currentUser').textContent = newUserId;
-            showStatus(`Successfully switched to: ${newUserId}`, "success");
-            document.getElementById('userManagement').style.display = 'none';
-        } else if (result.error) {
-            showStatus(`Error: ${result.error}`, "error");
-        }
-    } catch (error) {
-        showStatus(`API Error: ${error.message}`, "error");
-    }
-}
-
-async function loadActiveUsers() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/get-active-users`);
-        const result = await response.json();
-        
-        if (result.active_users) {
-            const usersDiv = document.getElementById('activeUsers');
-            if (result.active_users.length > 0) {
-                let html = '<h4>Currently Active Users:</h4><ul>';
-                result.active_users.forEach(user => {
-                    html += `<li style="margin: 0.5rem 0; color: #667eea;">${user}</li>`;
-                });
-                html += '</ul>';
-                usersDiv.innerHTML = html;
-            } else {
-                usersDiv.innerHTML = '<p style="color: #666;">No active users found</p>';
-            }
-        } else if (result.error) {
-            showStatus(`Error: ${result.error}`, "error");
-        }
-    } catch (error) {
-        showStatus(`API Error: ${error.message}`, "error");
-    }
-}
-
-// History Management
-async function loadHistory() {
-    const historySection = document.getElementById('historySection');
-    historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
-    
-    if (historySection.style.display === 'block') {
-        try {
-            const response = await fetch(`${API_BASE_URL}/get-history/${currentUser}`);
-            const result = await response.json();
-            
-            if (result.chats) {
-                const historyContent = document.getElementById('historyContent');
-                if (Object.keys(result.chats).length > 0) {
-                    let html = '';
-                    Object.entries(result.chats).forEach(([title, chat]) => {
-                        html += `
-                            <div class="history-item">
-                                <h4>💬 ${title}</h4>
-                                <p><strong>Question:</strong><br>${chat.question}</p>
-                                <p><strong>Answer:</strong><br>${chat.answer}</p>
-                            </div>
-                        `;
-                    });
-                    historyContent.innerHTML = html;
+        // API Functions
+        async function testConnection() {
+            showStatus("Testing connection...", "info");
+            try {
+                const response = await fetch(`${API_BASE_URL}/get-active-users`, { timeout: 5000 });
+                if (response.ok) {
+                    apiConnected = true;
+                    showStatus("✅ Successfully connected to API", "success");
                 } else {
-                    historyContent.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No chat history found for this user</p>';
+                    throw new Error("Connection failed");
                 }
-            } else if (result.error) {
-                showStatus(`Error: ${result.error}`, "error");
+            } catch (error) {
+                apiConnected = false;
+                showStatus("❌ Connection failed. Please check API status.", "error");
             }
-        } catch (error) {
-            showStatus(`API Error: ${error.message}`, "error");
         }
-    }
-}
 
-// Contact Form
-async function submitContact() {
-    const name = document.getElementById('contactName').value.trim();
-    const email = document.getElementById('contactEmail').value.trim();
-    const message = document.getElementById('contactMessage').value.trim();
+        async function sendMessage() {
+            const question = document.getElementById('question').value.trim();
+            if (!question) {
+                showStatus("Please enter a question.", "warning");
+                return;
+            }
 
-    if (!name || !email || !message) {
-        showStatus("Please fill out all fields before submitting.", "warning");
-        return;
-    }
+            if (!apiConnected) {
+                showStatus("Please test API connection first.", "warning");
+                return;
+            }
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/contact-us`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, message })
-        });
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('response').style.display = 'none';
+            document.getElementById('chatFaqs').style.display = 'none';
+            document.getElementById('rating').style.display = 'none';
 
-        const result = await response.json();
-        
-        if (result.message) {
-            showStatus("Your message was submitted successfully. We'll get back to you soon.", "success");
-            // Clear form
-            document.getElementById('contactName').value = '';
-            document.getElementById('contactEmail').value = '';
-            document.getElementById('contactMessage').value = '';
-        } else if (result.error) {
-            showStatus(`Error: ${result.error}`, "error");
+            try {
+                const response = await fetch(`${API_BASE_URL}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUser, question: question })
+                });
+
+                const result = await response.json();
+                document.getElementById('loading').style.display = 'none';
+
+                if (result.answer) {
+                    // Clean and display answer
+                    const uniqueLines = [...new Set(result.answer.split('\n'))];
+                    const cleanedAnswer = uniqueLines.join('\n');
+                    
+                    document.getElementById('responseContent').innerHTML = cleanedAnswer.replace(/\n/g, '<br>');
+                    document.getElementById('response').style.display = 'block';
+
+                    // Display FAQs if available
+                    if (result.faqs && result.faqs.length > 0) {
+                        displayFaqs(result.faqs, result.faq_intro);
+                    }
+
+                    // Store for rating
+                    lastQuestion = question;
+                    lastResponse = cleanedAnswer;
+                    document.getElementById('rating').style.display = 'block';
+                    
+                    // Clear question
+                    document.getElementById('question').value = '';
+                } else if (result.error) {
+                    showStatus(`Error: ${result.error}`, "error");
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showStatus(`API Error: ${error.message}`, "error");
+            }
         }
-    } catch (error) {
-        showStatus(`API Error: ${error.message}`, "error");
-    }
-}
 
-// Status Message Display
-function showStatus(message, type) {
-    // Remove existing status messages
-    const existingStatus = document.querySelector('.status');
-    if (existingStatus) {
-        existingStatus.remove();
-    }
-
-    // Create new status message
-    const statusDiv = document.createElement('div');
-    statusDiv.className = `status ${type}`;
-    statusDiv.innerHTML = message;
-
-    // Insert after the chat body or main content area
-    const targetElement = document.querySelector('.chat-body') || document.querySelector('.main-content') || document.body;
-    targetElement.appendChild(statusDiv);
-
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        if (statusDiv.parentNode) {
-            statusDiv.remove();
-        }
-    }, 5000);
-}
-
-// FAQ Functions - UPDATED AND FIXED
-async function loadAllFAQs() {
-    const container = document.getElementById('allFAQsContainer');
-    if (!container) return;
-    
-    // Show loading state
-    container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #667eea;">Loading FAQs...</div>';
-    
-    try {
-        const response = await fetch(`${API_BASE_URL}/all-faqs`);
-        const result = await response.json();
-        
-        if (result.topics && Object.keys(result.topics).length > 0) {
-            displayAllFAQs(result.topics);
-        } else if (result.error) {
-            container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #e74c3c;">Error loading FAQs: ${result.error}</div>`;
-        } else {
-            container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666;">No FAQs available at the moment.</div>';
-        }
-    } catch (error) {
-        container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #e74c3c;">Failed to load FAQs: ${error.message}</div>`;
-    }
-}
-
-function displayAllFAQs(topics) {
-    const container = document.getElementById('allFAQsContainer');
-    let html = '';
-    
-    Object.entries(topics).forEach(([topic, faqs], topicIndex) => {
-        html += `<div class="faq-topic-section">`;
-        html += `<h3 style="color: #667eea; margin: 2rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 2px solid #e8f2ff;">${topic}</h3>`;
-        
-        if (Array.isArray(faqs) && faqs.length > 0) {
-            faqs.forEach((faq, faqIndex) => {
-                const uniqueId = `topic${topicIndex}_faq${faqIndex}`;
+        function displayFaqs(faqs, intro) {
+            const faqContent = document.getElementById('faqContent');
+            let html = '';
+            
+            if (intro) {
+                html += `<h4>${intro}</h4>`;
+            }
+            
+            faqs.forEach((faq, index) => {
                 html += `
-                    <div class="faq-item" style="margin-bottom: 1rem; border: 1px solid #e8f2ff; border-radius: 8px; overflow: hidden;">
-                        <div class="faq-question" onclick="toggleDynamicFaq('${uniqueId}')" style="padding: 1rem; background: #f8faff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; color: #333;">
-                            <span>${faq.question}</span>
-                            <span class="toggle-icon" style="font-size: 1.2rem; color: #667eea;">+</span>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleChatFaq(${index})">
+                            ${faq.question}
+                            <span>+</span>
                         </div>
-                        <div class="faq-answer" id="${uniqueId}" style="display: none; padding: 1rem; background: white; border-top: 1px solid #e8f2ff; line-height: 1.6;">
-                            ${faq.answer}
+                        <div class="faq-answer" id="chatFaq${index}">
+                            <strong>Q:</strong> ${faq.question}<br>
+                            <strong>A:</strong> ${faq.answer}
                         </div>
                     </div>
                 `;
             });
-        } else {
-            html += '<p style="color: #666; font-style: italic;">No questions available for this topic.</p>';
+            
+            faqContent.innerHTML = html;
+            document.getElementById('chatFaqs').style.display = 'block';
         }
-        
-        html += `</div>`;
-    });
-    
-    container.innerHTML = html;
-}
 
-async function searchFAQ() {
-    const question = document.getElementById('faqSearch').value.trim();
-    const answerDiv = document.getElementById('faqAnswer');
-    const contentDiv = document.getElementById('faqAnswerContent');
-    
-    if (!question) {
-        showStatus("Please enter a question to search.", "warning");
-        return;
-    }
+        function toggleChatFaq(index) {
+            const answer = document.getElementById(`chatFaq${index}`);
+            const question = answer.previousElementSibling;
+            const icon = question.querySelector('span');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                icon.classList.remove('rotated');
+            } else {
+                // Close all other open FAQs
+                document.querySelectorAll('#chatFaqs .faq-answer.active').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelectorAll('#chatFaqs .faq-question span.rotated').forEach(arrow => {
+                    arrow.classList.remove('rotated');
+                });
+                
+                // Open clicked FAQ
+                answer.classList.add('active');
+                icon.classList.add('rotated');
+            }
+        }
 
-    // Show loading state
-    contentDiv.innerHTML = '<div style="text-align: center; padding: 1rem; color: #667eea;">Searching...</div>';
-    answerDiv.style.display = 'block';
+        // FAQ Toggle for Static FAQs Page
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const arrow = element.querySelector('.arrow');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                arrow.classList.remove('rotated');
+            } else {
+                // Close all other open FAQs
+                document.querySelectorAll('.faq-answer.active').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelectorAll('.arrow.rotated').forEach(arrow => {
+                    arrow.classList.remove('rotated');
+                });
+                
+                // Open clicked FAQ
+                answer.classList.add('active');
+                arrow.classList.add('rotated');
+            }
+        }
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/faq-answer`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: question })
+        // Rating System
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        async function submitRating() {
+            if (currentRating === 0) {
+                showStatus("Please select a rating before submitting.", "warning");
+                return;
+            }
+
+            const suggestion = document.getElementById('suggestion').value.trim();
+            
+            try {
+                const payload = {
+                    user_id: currentUser,
+                    question: lastQuestion,
+                    rating: currentRating
+                };
+                
+                if (suggestion) {
+                    payload.suggestion = suggestion;
+                }
+
+                const response = await fetch(`${API_BASE_URL}/rate-answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.message) {
+                    showStatus("Rating and suggestion submitted. We appreciate your feedback! 🙂", "success");
+                    document.getElementById('rating').style.display = 'none';
+                } else if (result.error) {
+                    showStatus(`Error: ${result.error}`, "error");
+                }
+            } catch (error) {
+                showStatus(`API Error: ${error.message}`, "error");
+            }
+        }
+
+        // User Management
+        function showUserManagement() {
+            const userMgmt = document.getElementById('userManagement');
+            userMgmt.style.display = userMgmt.style.display === 'none' ? 'block' : 'none';
+        }
+
+        async function changeUser() {
+            const newUserId = document.getElementById('newUserId').value.trim();
+            if (!newUserId) {
+                showStatus("Please enter a new user ID.", "warning");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/change-user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ current_user_id: currentUser, new_user_id: newUserId })
+                });
+
+                const result = await response.json();
+                
+                if (result.message) {
+                    currentUser = newUserId;
+                    document.getElementById('currentUser').textContent = newUserId;
+                    showStatus(`Successfully switched to: ${newUserId}`, "success");
+                    document.getElementById('userManagement').style.display = 'none';
+                } else if (result.error) {
+                    showStatus(`Error: ${result.error}`, "error");
+                }
+            } catch (error) {
+                showStatus(`API Error: ${error.message}`, "error");
+            }
+        }
+
+        async function loadActiveUsers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/get-active-users`);
+                const result = await response.json();
+                
+                if (result.active_users) {
+                    const usersDiv = document.getElementById('activeUsers');
+                    if (result.active_users.length > 0) {
+                        let html = '<h4>Currently Active Users:</h4><ul>';
+                        result.active_users.forEach(user => {
+                            html += `<li style="margin: 0.5rem 0; color: #667eea;">${user}</li>`;
+                        });
+                        html += '</ul>';
+                        usersDiv.innerHTML = html;
+                    } else {
+                        usersDiv.innerHTML = '<p style="color: #666;">No active users found</p>';
+                    }
+                } else if (result.error) {
+                    showStatus(`Error: ${result.error}`, "error");
+                }
+            } catch (error) {
+                showStatus(`API Error: ${error.message}`, "error");
+            }
+        }
+
+        // History Management
+        async function loadHistory() {
+            const historySection = document.getElementById('historySection');
+            historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
+            
+            if (historySection.style.display === 'block') {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/get-history/${currentUser}`);
+                    const result = await response.json();
+                    
+                    if (result.chats) {
+                        const historyContent = document.getElementById('historyContent');
+                        if (Object.keys(result.chats).length > 0) {
+                            let html = '';
+                            Object.entries(result.chats).forEach(([title, chat]) => {
+                                html += `
+                                    <div class="history-item">
+                                        <h4>💬 ${title}</h4>
+                                        <p><strong>Question:</strong><br>${chat.question}</p>
+                                        <p><strong>Answer:</strong><br>${chat.answer}</p>
+                                    </div>
+                                `;
+                            });
+                            historyContent.innerHTML = html;
+                        } else {
+                            historyContent.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No chat history found for this user</p>';
+                        }
+                    } else if (result.error) {
+                        showStatus(`Error: ${result.error}`, "error");
+                    }
+                } catch (error) {
+                    showStatus(`API Error: ${error.message}`, "error");
+                }
+            }
+        }
+
+        // Contact Form
+        async function submitContact() {
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            if (!name || !email || !message) {
+                showStatus("Please fill out all fields before submitting.", "warning");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/contact-us`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message })
+                });
+
+                const result = await response.json();
+                
+                if (result.message) {
+                    showStatus("Your message was submitted successfully. We'll get back to you soon.", "success");
+                    // Clear form
+                    document.getElementById('contactName').value = '';
+                    document.getElementById('contactEmail').value = '';
+                    document.getElementById('contactMessage').value = '';
+                } else if (result.error) {
+                    showStatus(`Error: ${result.error}`, "error");
+                }
+            } catch (error) {
+                showStatus(`API Error: ${error.message}`, "error");
+            }
+        }
+
+        // Status Message Display
+        function showStatus(message, type) {
+            // Remove existing status messages
+            const existingStatus = document.querySelector('.status');
+            if (existingStatus) {
+                existingStatus.remove();
+            }
+
+            // Create new status message
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+
+            // Insert after the chat body or main content area
+            const targetElement = document.querySelector('.chat-body') || document.querySelector('.content-page') || document.body;
+            targetElement.appendChild(statusDiv);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (statusDiv.parentNode) {
+                    statusDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test connection on load
+            testConnection();
+            
+            // Set initial user
+            const currentUserElement = document.getElementById('currentUser');
+            if (currentUserElement) {
+                currentUserElement.textContent = currentUser;
+            }
         });
 
-        const result = await response.json();
-        
-        if (result.answer) {
-            contentDiv.innerHTML = result.answer.replace(/\n/g, '<br>');
-        } else if (result.error) {
-            contentDiv.innerHTML = `<div style="color: #e74c3c;">Error: ${result.error}</div>`;
-        } else {
-            contentDiv.innerHTML = '<div style="color: #666;">No answer found for your question.</div>';
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) {
+                navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+            }
         }
-    } catch (error) {
-        contentDiv.innerHTML = `<div style="color: #e74c3c;">Search failed: ${error.message}</div>`;
-    }
-}
 
-function toggleDynamicFaq(faqId) {
-    const answer = document.getElementById(faqId);
-    const question = answer.previousElementSibling;
-    const icon = question.querySelector('.toggle-icon');
-    
-    if (answer.style.display === 'none' || !answer.style.display) {
-        answer.style.display = 'block';
-        icon.textContent = '-';
-    } else {
-        answer.style.display = 'none';
-        icon.textContent = '+';
-    }
-}
-
-function clearFAQResults() {
-    document.getElementById('faqSearch').value = '';
-    document.getElementById('faqAnswer').style.display = 'none';
-}
-
-// Initialize app
-document.addEventListener('DOMContentLoaded', function() {
-    // Test connection on load
-    testConnection();
-    
-    // Set initial user
-    const currentUserElement = document.getElementById('currentUser');
-    if (currentUserElement) {
-        currentUserElement.textContent = currentUser;
-    }
-    
-    // Load FAQs if we're on the FAQ page initially
-    if (document.getElementById('faq') && document.getElementById('faq').classList.contains('active')) {
-        loadAllFAQs();
-    }
-});
-
-// Mobile menu toggle (for future enhancement)
-function toggleMobileMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    if (navLinks) {
-        navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
-    }
-}
-
-// Add mobile menu button functionality
-window.addEventListener('resize', function() {
-    if (window.innerWidth <= 768) {
-        const nav = document.querySelector('.nav');
-        if (nav && !nav.querySelector('.mobile-menu-btn')) {
-            const mobileMenuBtn = document.createElement('button');
-            mobileMenuBtn.className = 'mobile-menu-btn';
-            mobileMenuBtn.innerHTML = '☰';
-            mobileMenuBtn.style.cssText = `
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                color: #667eea;
-                display: block;
-            `;
-            mobileMenuBtn.onclick = toggleMobileMenu;
-            nav.appendChild(mobileMenuBtn);
-        }
-    } else {
-        const mobileBtn = document.querySelector('.mobile-menu-btn');
-        if (mobileBtn) {
-            mobileBtn.remove();
-        }
-        const navLinks = document.querySelector('.nav-links');
-        if (navLinks) {
-            navLinks.style.display = 'flex';
-        }
-    }
-});
+        // Add mobile menu button functionality
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                const nav = document.querySelector('.nav');
+                if (nav && !nav.querySelector('.mobile-menu-btn')) {
+                    const mobileMenuBtn = document.createElement('button');
+                    mobileMenuBtn.className = 'mobile-menu-btn';
+                    mobileMenuBtn.innerHTML = '☰';
+                    mobileMenuBtn.style.cssText = `
+                        background: none;
+                        border: none;
+                        font-size: 1.5rem;
+                        cursor: pointer;
+                        color: #667eea;
+                        display: block;
+                    `;
+                    mobileMenuBtn.onclick = toggleMobileMenu;
+                    nav.appendChild(mobileMenuBtn);
+                }
+            } else {
+                const mobileBtn = document.querySelector('.mobile-menu-btn');
+                if (mobileBtn) {
+                    mobileBtn.remove();
+                }
+                const navLinks = document.querySelector('.nav-links');
+                if (navLinks) {
+                    navLinks.style.display = 'flex';
+                }
+            }
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMG Counselor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #667eea;
+        }
+        
+        /* Main Content */
+        .main {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            padding: 2rem 0;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Chat Interface */
+        .chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .chat-body {
+            padding: 2rem;
+        }
+        
+        .user-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        textarea, input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+        
+        textarea:focus, input[type="text"]:focus, input[type="email"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+        }
+        
+        /* Response Area */
+        .response-area {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .response-area h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        /* FAQ Section - Updated Styles */
+        .faq-search-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f8faff;
+            border-radius: 8px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-box button {
+            padding: 0.75rem 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .faq-topic-section {
+            margin-bottom: 2rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid #e8f2ff;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 1rem;
+            background: #f8faff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: #e8f2ff;
+        }
+        
+        .faq-answer {
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid #e8f2ff;
+            line-height: 1.6;
+            display: none;
+            color: #666;
+        }
+        
+        /* Rating */
+        .rating-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stars {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .star {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.2s ease;
+        }
+        
+        .star.active {
+            color: #ffc107;
+        }
+        
+        /* Content Pages */
+        .content-page {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            padding: 3rem;
+        }
+        
+        .content-page h1 {
+            color: #667eea;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .content-page h2 {
+            color: #333;
+            margin: 2rem 0 1rem 0;
+            font-size: 1.5rem;
+        }
+        
+        .content-page p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        /* History */
+        .history-item {
+            background: white;
+            border-radius: 12px;
+            margin: 1rem 0;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-item h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-item p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        /* User Management */
+        .user-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Status Messages */
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #b8daff;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .user-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-body {
+                padding: 1rem;
+            }
+            
+            .content-page {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    ⚕️ IMG Counselor
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('search', event)" class="active">Search</a></li>
+                    <li><a href="#" onclick="showPage('about', event)">About Us</a></li>
+                    <li><a href="#" onclick="showPage('faqs', event)">FAQs</a></li>
+                    <li><a href="#" onclick="showPage('contact', event)">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Search Page (Main Chat Interface) -->
+            <div id="search" class="page active">
+                <div class="hero">
+                    <h1>IMG Counselor</h1>
+                    <p>Your AI-powered guide for International Medical Graduate applications</p>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h2>Search for IMG Related Information</h2>
+                    </div>
+                    <div class="chat-body">
+                        <div class="user-info">
+                            <strong>Current User:</strong> <span id="currentUser">user_1234</span>
+                            <button class="btn btn-secondary" onclick="showUserManagement()" style="float: right; padding: 0.5rem 1rem; font-size: 0.8rem;">Manage Users</button>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="question">Ask your question:</label>
+                            <textarea id="question" rows="4" placeholder="Enter your IMG-related question here..."></textarea>
+                        </div>
+
+                        <button class="btn" onclick="sendMessage()">Send Question</button>
+                        <button class="btn btn-secondary" onclick="loadHistory()">View History</button>
+                        <button class="btn btn-secondary" onclick="testConnection()">Test Connection</button>
+
+                        <div id="loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <p style="text-align: center;">Thinking...</p>
+                        </div>
+
+                        <div id="response" class="response-area" style="display: none;">
+                            <h3>Here's the information:</h3>
+                            <div id="responseContent"></div>
+                        </div>
+
+                        <div id="faqs" style="display: none;">
+                            <h3>Related FAQs:</h3>
+                            <div id="faqContent"></div>
+                        </div>
+
+                        <div id="rating" class="rating-container" style="display: none;">
+                            <h4>Rate this response:</h4>
+                            <div class="stars" id="starRating">
+                                <span class="star" onclick="setRating(1)">★</span>
+                                <span class="star" onclick="setRating(2)">★</span>
+                                <span class="star" onclick="setRating(3)">★</span>
+                                <span class="star" onclick="setRating(4)">★</span>
+                                <span class="star" onclick="setRating(5)">★</span>
+                            </div>
+                            <div class="input-group">
+                                <label for="suggestion">Suggestions for improvement (optional):</label>
+                                <textarea id="suggestion" rows="3" placeholder="How can we improve this response?"></textarea>
+                            </div>
+                            <button class="btn" onclick="submitRating()">Submit Feedback</button>
+                        </div>
+
+                        <!-- User Management Modal -->
+                        <div id="userManagement" style="display: none;">
+                            <div class="user-grid">
+                                <div class="user-card">
+                                    <h3>Switch User</h3>
+                                    <div class="input-group">
+                                        <label for="newUserId">New User ID:</label>
+                                        <input type="text" id="newUserId" value="user_5678">
+                                    </div>
+                                    <button class="btn" onclick="changeUser()">Change User</button>
+                                </div>
+                                <div class="user-card">
+                                    <h3>Active Users</h3>
+                                    <button class="btn btn-secondary" onclick="loadActiveUsers()">Refresh User List</button>
+                                    <div id="activeUsers"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- History Section -->
+                        <div id="historySection" style="display: none;">
+                            <h3>Chat History</h3>
+                            <div id="historyContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Us Page -->
+            <div id="about" class="page">
+                <div class="content-page">
+                    <h1>About IMG Counselor</h1>
+                    <p>Welcome to IMG Counselor, your trusted companion in navigating the complex journey of International Medical Graduate (IMG) applications.</p>
+                    
+                    <h2>Our Mission</h2>
+                    <p>We intend to help IMGs get their desired medical residency positions while spending less on application fees. Our AI-powered platform provides personalized guidance, helping you make informed decisions about where to apply and how to maximize your chances of success.</p>
+                    
+                    <h2>What We Offer</h2>
+                    <p>• <strong>Smart Application Strategy:</strong> Get personalized recommendations on which programs to apply to based on your profile</p>
+                    <p>• <strong>Cost Optimization:</strong> Reduce unnecessary application fees by targeting the right programs</p>
+                    <p>• <strong>Real-time Guidance:</strong> 24/7 AI assistant to answer your IMG-related questions</p>
+                    <p>• <strong>Success Analytics:</strong> Data-driven insights to improve your application strategy</p>
+                    
+                    <h2>Why Choose Us?</h2>
+                    <p>Traditional application processes can be overwhelming and expensive. Our platform leverages artificial intelligence and comprehensive data analysis to provide you with targeted advice, potentially saving you thousands of dollars in application fees while increasing your chances of matching into your preferred residency program.</p>
+                    
+                    <p>Join thousands of IMGs who have successfully navigated their residency applications with our guidance.</p>
+                </div>
+            </div>
+
+            <!-- FAQs Page - Updated Structure -->
+            <div id="faqs" class="page">
+                <div class="container">
+                    <h2>Frequently Asked Questions</h2>
+                    
+                    <!-- FAQ Search Section -->
+                    <div class="faq-search-section">
+                        <div class="search-box">
+                            <input type="text" id="faqSearch" placeholder="Search for a specific question...">
+                            <button onclick="searchFAQ()">Search</button>
+                            <button onclick="clearFAQResults()">Clear</button>
+                        </div>
+                        
+                        <!-- Search Results -->
+                        <div id="faqAnswer" style="display: none;">
+                            <h4>Search Result:</h4>
+                            <div id="faqAnswerContent"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- All FAQs Container - CRITICAL -->
+                    <div id="allFAQsContainer">
+                        <!-- FAQs will be loaded here dynamically -->
+                        <div style="text-align: center; color: #666; padding: 2rem;">
+                            <p>Loading FAQs or use the search box above to find specific information.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Page -->
+            <div id="contact" class="page">
+                <div class="content-page">
+                    <h1>Contact Us</h1>
+                    <p>Have questions, suggestions, or need support? We'd love to hear from you!</p>
+                    
+                    <div class="input-group">
+                        <label for="contactName">Your Name:</label>
+                        <input type="text" id="contactName" placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="contactEmail">Your Email:</label>
+                        <input type="email" id="contactEmail" placeholder="Enter your email address">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="contactMessage">Your Message:</label>
+                        <textarea id="contactMessage" rows="6" placeholder="Describe your issue, suggestion, or inquiry..."></textarea>
+                    </div>
+                    
+                    <button class="btn" onclick="submitContact()">Send Message</button>
+                    
+                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                        <h2>Other Ways to Reach Us</h2>
+                        <p><strong>Email:</strong> support@imgcounselor.com</p>
+                        <p><strong>Response Time:</strong> We typically respond within 24 hours</p>
+                        <p><strong>Business Hours:</strong> Monday - Friday, 9 AM - 6 PM EST</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sample JavaScript functions - you'll need to implement these
+        function showPage(pageId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update active navigation link
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const activeLink = document.querySelector(`[onclick="showPage('${pageId}', event)"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Load FAQs when FAQ page is shown
+            if (pageId === 'faqs') {
+                console.log('Loading FAQs...');
+                loadAllFAQs();
+            }
+        }
+        
+        function searchFAQ() {
+            const query = document.getElementById('faqSearch').value;
+            console.log('Searching FAQ for:', query);
+            // Implement your FAQ search logic here
+        }
+        
+        function clearFAQResults() {
+            document.getElementById('faqAnswer').style.display = 'none';
+            document.getElementById('faqSearch').value = '';
+            loadAllFAQs();
+        }
+        
+        function loadAllFAQs() {
+            const container = document.getElementById('allFAQsContainer');
+            console.log('Loading all FAQs...');
+            
+            // Sample FAQ data - replace with your actual data
+            const sampleFAQs = [
+                {
+                    question: "What is the USMLE Step 1 passing score?",
+                    answer: "The USMLE Step 1 is now pass/fail as of January 2022. Previously, a score of 194 was required to pass."
+                },
+                {
+                    question: "How many residency programs should I apply to?",
+                    answer: "The number varies based on your specialty and competitiveness. Generally, IMGs apply to 50-200+ programs depending on their target specialty."
+                },
+                {
+                    question: "What is the Match rate for IMGs?",
+                    answer: "The Match rate for IMGs varies by specialty but is generally lower than US medical graduates. Recent data shows approximately 60% match rate for non-US IMGs."
+                }
+            ];
+            
+            container.innerHTML = '';
+            
+            sampleFAQs.forEach((faq, index) => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'faq-item';
+                faqItem.innerHTML = `
+                    <div class="faq-question" onclick="toggleFAQ(${index})">
+                        ${faq.question}
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer" id="faq-answer-${index}">
+                        ${faq.answer}
+                    </div>
+                `;
+                container.appendChild(faqItem);
+            });
+        }
+        
+        function toggleFAQ(index) {
+            const answer = document.getElementById(`faq-answer-${index}`);
+            const question = answer.previousElementSibling;
+            const icon = question.querySelector('span');
+            
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                icon.textContent = '+';
+            } else {
+                answer.style.display = 'block';
+                icon.textContent = '−';
+            }
+        }
+        
+        function testConnection() {
+            console.log('Testing connection...');
+            // Implement your connection test logic here
+        }
+        
+        function sendMessage() {
+            console.log('Sending message...');
+            // Implement your message sending logic here
+        }
+        
+        function loadHistory() {
+            console.log('Loading history...');
+            // Implement your history loading logic here
+        }
+        
+        function showUserManagement() {
+            const userMgmt = document.getElementById('userManagement');
+            userMgmt.style.display = userMgmt.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function changeUser() {
+            const newUserId = document.getElementById('newUserId').value;
+            document.getElementById('currentUser').textContent = newUserId;
+            console.log('Changed user to:', newUserId);
+        }
+        
+        function loadActiveUsers() {
+            console.log('Loading active users...');
+            // Implement your active users loading logic here
+        }
+        
+        function setRating(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                star.classList.toggle('active', index < rating);
+            });
+        }
+        
+        function submitRating() {
+            console.log('Submitting rating...');
+            // Implement your rating submission logic here
+        }
+        
+        function submitContact() {
+            console.log('Submitting contact form...');
+            // Implement your contact form submission logic here
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded');
+        });
+    </script>
+</body>
+</html>
