@@ -448,7 +448,7 @@
 
                         <button class="btn" onclick="sendMessage()">Send Question</button>
                         <button class="btn btn-secondary" onclick="loadHistory()">View History</button>
-                        <button class="btn btn-secondary" onclick="testConnection()">Test Connection</button>
+                        <button class="btn btn-secondary" onclick="testConnection()">Reconnect here</button>
 
                         <div id="loading" style="display: none;">
                             <div class="spinner"></div>
@@ -740,7 +740,7 @@
                 const response = await fetch(`${API_BASE_URL}/get-active-users`, { timeout: 5000 });
                 if (response.ok) {
                     apiConnected = true;
-                    showStatus("✅ Successfully connected to API", "success");
+                    showStatus("Successfully Connected!", "success");
                 } else {
                     throw new Error("Connection failed");
                 }
