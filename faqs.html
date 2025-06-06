@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMG Counselor - FAQs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; color: white; margin-bottom: 30px; }
+        .faq-section { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .faq-section h2 { color: #764ba2; margin-bottom: 20px; font-size: 1.8em; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        .faq-item { margin-bottom: 15px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+        .faq-question { background: #f8f9fa; padding: 15px; cursor: pointer; font-weight: 600; color: #495057; transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question:hover { background: #e9ecef; color: #764ba2; }
+        .faq-answer { padding: 20px; background: white; display: none; border-top: 1px solid #e0e0e0; }
+        .faq-answer.active { display: block; animation: slideDown 0.3s ease; }
+        .arrow { transition: transform 0.3s; }
+        .arrow.rotated { transform: rotate(180deg); }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .back-btn { display: inline-block; background: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 25px; margin-bottom: 20px; transition: all 0.3s; }
+        .back-btn:hover { background: #764ba2; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">← Back to Counselor</a>
+            <h1>IMG Counselor FAQ</h1>
+            <p>Comprehensive guide for International Medical Graduates</p>
+        </div>
+
+        <div class="faq-section">
+            <h2>ECFMG Certification & Basic Eligibility</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What is ECFMG Certification and why is it essential for IMGs?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    ECFMG (Educational Commission for Foreign Medical Graduates) Certification is mandatory for all International Medical Graduates to be eligible for US residency programs. It verifies your medical education credentials, ensures you meet US standards, and serves as a prerequisite for the NRMP Match. Without ECFMG certification, you cannot participate in the residency match process.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What are the USMLE exams I need to pass for ECFMG Certification?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    You must pass USMLE Step 1 and Step 2 CK (Clinical Knowledge) for ECFMG certification. Step 1 tests basic medical sciences, while Step 2 CK evaluates clinical knowledge and patient care skills. Step 3 is not required for certification but may be needed for certain visa types or programs.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How long does the ECFMG certification process typically take?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    The ECFMG certification process typically takes 4-8 weeks after all requirements are met. This includes credential verification, exam score reporting, and final certificate issuance. However, delays can occur due to document verification issues or high application volumes.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>USMLE Exams</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What is a competitive USMLE score for IMGs?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    For IMGs, competitive scores vary by specialty: Step 1: 240+ (highly competitive), 220-240 (competitive), 200-220 (acceptable for some programs). Step 2 CK: 250+ (excellent), 240-250 (very good), 230-240 (good). Remember, Step 1 is now Pass/Fail, making Step 2 CK scores more critical.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How many attempts do I have for each USMLE Step?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    You have 6 attempts for each USMLE Step within a 7-year period. Multiple attempts can impact your application negatively, so thorough preparation is crucial. Programs often view first-attempt passes more favorably than multiple attempts.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>US Clinical Experience (USCE)</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What is US Clinical Experience and why is it important?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    USCE refers to clinical rotations, observerships, or research experiences in US healthcare settings. It's crucial for IMGs as it demonstrates familiarity with the US healthcare system, provides networking opportunities, and helps secure strong letters of recommendation from US physicians.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Which types of USCE are most valued?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Hands-on clinical rotations (externships/sub-internships) are most valued, followed by observerships with meaningful patient interaction. Research experiences in US institutions are also valuable, especially if they lead to publications. Avoid purely observational experiences with minimal interaction.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>Application Process (ERAS)</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What documents are required for ERAS application?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Required documents include: Common Application Form, Personal Statement, Letters of Recommendation (3-4), MSPE/Dean's Letter, Medical School Transcript, USMLE Transcript, ECFMG Status Report, Professional Photo, and CV. Some programs may require additional specialty-specific documents.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How many programs should an IMG typically apply to?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    IMGs typically apply to 80-150 programs depending on their competitiveness and specialty choice. Highly competitive specialties may require 150+ applications, while primary care specialties might need 80-120. Quality over quantity is important - research programs thoroughly.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>Interview Process & Match</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How should I prepare for residency interviews as an IMG?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Prepare by researching each program thoroughly, practicing common questions (Why this specialty? Why our program? Tell me about yourself), preparing stories that highlight your strengths, understanding current healthcare issues, and being ready to address any gaps or weaknesses in your application professionally.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What happens if I don't match in the main match?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    If you don't match, you can participate in SOAP (Supplemental Offer and Acceptance Program) immediately after Match Day. If unsuccessful in SOAP, options include taking a research year, gaining more USCE, improving USMLE scores, considering preliminary/transitional year programs, or applying again next cycle.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>Visas for Residency</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What are the common visa types for IMG residency?
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    The two main visa types are J-1 and H-1B. J-1 is more common, easier to obtain, but requires returning to home country for 2 years after training (unless waived). H-1B allows dual intent (path to green card) but is harder to obtain and requires Step 3 passage before residency.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const arrow = element.querySelector('.arrow');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                arrow.classList.remove('rotated');
+            } else {
+                // Close all other open FAQs
+                document.querySelectorAll('.faq-answer.active').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelectorAll('.arrow.rotated').forEach(arrow => {
+                    arrow.classList.remove('rotated');
+                });
+                
+                // Open clicked FAQ
+                answer.classList.add('active');
+                arrow.classList.add('rotated');
+            }
+        }
+    </script>
+</body>
+</html>
