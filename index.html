@@ -438,7 +438,7 @@
                     <div class="chat-body">
                         <div class="user-info">
                             <strong>Current User:</strong> <span id="currentUser">user_1234</span>
-                            <button class="btn btn-secondary" onclick="showUserManagement()" style="float: right; padding: 0.5rem 1rem; font-size: 0.8rem;">Manage Users</button>
+                            <button class="btn btn-secondary" onclick="showUserManagement()" style="float: right; padding: 0.5rem 1rem; font-size: 0.8rem;">Create Your Account</button>
                         </div>
 
                         <div class="input-group">
@@ -449,10 +449,10 @@
                         <button class="btn" onclick="sendMessage()">Send Question</button>
                         <button class="btn btn-secondary" onclick="loadHistory()">View History</button>
                         <button class="btn btn-secondary" onclick="testConnection()">Reconnect here</button>
-
+ 
                         <div id="loading" style="display: none;">
                             <div class="spinner"></div>
-                            <p style="text-align: center;">Thinking...</p>
+                            <p style="text-align: center;">Reasoning...</p>
                         </div>
 
                         <div id="response" class="response-area" style="display: none;">
@@ -488,9 +488,9 @@
                                     <h3>Switch User</h3>
                                     <div class="input-group">
                                         <label for="newUserId">New User ID:</label>
-                                        <input type="text" id="newUserId" value="user_5678">
+                                        <input type="text" id="newUserId" value="Default" placeholder="Enter new user ID">
                                     </div>
-                                    <button class="btn" onclick="changeUser()">Change User</button>
+                                    <button class="btn" onclick="changeUser()">Create</button>
                                 </div>
                                 <div class="user-card">
                                     <h3>Active Users</h3>
@@ -540,7 +540,7 @@
                     <div class="faq-section">
                         <h2>ECFMG Certification & Basic Eligibility</h2>
                         <div class="faq-item">
-                            <div class="faq-question" onsiteclick="toggleFAQ(this)">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
                                 What is ECFMG Certification and why is it essential for IMGs?
                                 <span class="arrow">▼</span>
                             </div>
