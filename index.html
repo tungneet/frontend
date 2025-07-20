@@ -36,41 +36,41 @@
             z-index: 1000;
             padding: 1rem 0;
         }
-        
+
         .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .logo {
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800; /* Increased from 700 to 800 for bolder text */
             color: #667eea;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .nav-links {
             display: flex;
             gap: 2rem;
             list-style: none;
         }
-        
+
         .nav-links a {
             text-decoration: none;
             color: #333;
-            font-weight: 500;
+            font-weight: 600; /* Increased from 500 to 600 for bolder links */
             transition: color 0.3s ease;
             cursor: pointer;
         }
-        
+
         .nav-links a:hover,
         .nav-links a.active {
             color: #667eea;
         }
-        
+
         /* Main Content */
         .main {
             margin-top: 80px;
@@ -403,6 +403,41 @@
                 margin: 1rem;
             }
         }
+
+        /* Roadmap Styles */
+        .roadmap-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .roadmap-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .roadmap-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .roadmap-item h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .roadmap-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .priority-essential { border-left: 4px solid #28a745; }
+        .priority-high { border-left: 4px solid #007bff; }
+        .priority-medium { border-left: 4px solid #ffc107; }
+        .priority-future { border-left: 4px solid #6c757d; }
     </style>
 </head>
 <body>
@@ -413,8 +448,9 @@
                     ⚕️ IMG Counselor
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#" onclick="showPage('Get Advice')" class="active">Get Advice</a></li>
                     <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                    <li><a href="#" onclick="showPage('roadmap')">Our Roadmap</a></li>
+                    <li><a href="#" onclick="showPage('Get Advice')" class="active">Get Advice</a></li>
                     <li><a href="#" onclick="showPage('faqs')">FAQs</a></li>
                     <li><a href="#" onclick="showPage('contact')">Contact</a></li>
                 </ul>
@@ -509,13 +545,13 @@
                 </div>
             </div>
 
-            <<!-- About Us Page -->
+            <!-- About Us Page -->
             <div id="about" class="page">
                 <div class="content-page">
                     <h1>About IMG Counselor</h1>
                     <p>Welcome to IMG Counselor, your trusted companion in navigating the complex journey of International Medical Graduate (IMG) applications. Founded with a vision to empower aspiring medical professionals, we are led by esteemed medical educator and mentor, Dr. Ranjodh Gill.</p>
                     
-                    <h2>Our Leadership</h2>
+                    <h2>Founder</h2>
                     <p><img src="ranjodh_gill.jpg" alt="Dr. Ranjodh Gill" style="float: left; margin-right: 20px; width: 150px; height: auto; border-radius: 10px;">
                     <strong>Ranjodh Gill, MD, FACE, FACP</strong><br>
                     Professor Emeritus in Medicine and Surgery<br>
@@ -541,6 +577,75 @@
                     <p>Navigating the residency application process can be daunting and costly. Under Dr. Gill’s leadership, IMG Counselor combines cutting-edge AI technology with expert medical knowledge to provide targeted advice. Our approach has helped thousands of IMGs save on application fees and successfully match into their preferred residency programs.</p>
                     
                     <p>Join our community and let us guide you toward a successful medical career in the United States.</p>
+                </div>
+            </div>
+            
+            <!-- Our Roadmap Page -->
+            <div id="roadmap" class="page">
+                <div class="content-page">
+                    <h1>Our Roadmap</h1>
+                    <p>At IMG Counselor, we are committed to evolving our platform to better serve International Medical Graduates (IMGs) on their journey to a successful medical career in the United States. Below is our planned roadmap, sequenced by priority levels, outlining key features we aim to introduce. We value your input—submit suggestions to shape our future!</p>
+
+                    <h2>Submit Your Suggestions</h2>
+                    <p>Have an idea or feature request? Share it with us! Include your name and email for follow-up (e.g., "Ranjeet@example.com: Please add export to PDF feature").</p>
+                    <div class="input-group">
+                        <label for="suggestionInput">Your Suggestion:</label>
+                        <textarea id="suggestionInput" rows="4" placeholder="e.g., Ranjeet@example.com: Add a resume builder tool"></textarea>
+                    </div>
+                    <button class="btn" onclick="submitSuggestion()">Submit Suggestion</button>
+                    <div id="suggestionStatus" class="status" style="display: none;"></div>
+
+                    <h2>Planned Features by Priority</h2>
+                    <div class="roadmap-timeline">
+                        <div class="roadmap-item priority-essential">
+                            <h3>Journey to Medical Career</h3>
+                            <p><strong>Priority:</strong> Essential - Guide for initial steps and certifications.</p>
+                        </div>
+                        <div class="roadmap-item priority-high">
+                            <h3>Application Cycle</h3>
+                            <p><strong>Priority:</strong> High - Tools for ERAS timelines and strategies.</p>
+                        </div>
+                        <div class="roadmap-item priority-high">
+                            <h3>Match</h3>
+                            <p><strong>Priority:</strong> High - Support for NRMP Match and mock interviews.</p>
+                        </div>
+                        <div class="roadmap-item priority-medium">
+                            <h3>Scramble or SOAP</h3>
+                            <p><strong>Priority:</strong> Medium - Assistance for post-Match positions.</p>
+                        </div>
+                        <div class="roadmap-item priority-medium">
+                            <h3>Residency</h3>
+                            <p><strong>Priority:</strong> Medium - Resources and mentorship during residency.</p>
+                        </div>
+                        <div class="roadmap-item priority-medium">
+                            <h3>Fellowship</h3>
+                            <p><strong>Priority:</strong> Medium - Guidance for subspecialty applications.</p>
+                        </div>
+                        <div class="roadmap-item priority-future">
+                            <h3>Spousal and Family Help</h3>
+                            <p><strong>Priority:</strong> Future - Support for visa and relocation.</p>
+                        </div>
+                        <div class="roadmap-item priority-future">
+                            <h3>Recruiters and Visa</h3>
+                            <p><strong>Priority:</strong> Future - Advice on visa and recruiter connections.</p>
+                        </div>
+                        <div class="roadmap-item priority-future">
+                            <h3>Networking</h3>
+                            <p><strong>Priority:</strong> Future - Platform to connect with peers.</p>
+                        </div>
+                        <div class="roadmap-item priority-future">
+                            <h3>Creating Database and Social Networking</h3>
+                            <p><strong>Priority:</strong> Future - Resource database and networking feature.</p>
+                        </div>
+                        <div class="roadmap-item priority-future">
+                            <h3>Interactive Cafe</h3>
+                            <p><strong>Priority:</strong> Future - Virtual space for discussions.</p>
+                        </div>
+                    </div>
+
+                    <h2>Vote for Your Priorities</h2>
+                    <p>Help us prioritize by reviewing the features we’d like to see implemented soonest.</p>
+                    <div id="voteStatus" class="status" style="display: none;"></div>
                 </div>
             </div>
 
@@ -1101,6 +1206,70 @@
                     statusDiv.remove();
                 }
             }, 5000);
+        }
+
+        // Roadmap Voting and Suggestion Functions
+        function voteFeature(featureName) {
+            const voteStatus = document.getElementById('voteStatus');
+            voteStatus.style.display = 'block';
+            voteStatus.className = 'status info';
+            voteStatus.textContent = 'Submitting your vote...';
+
+            fetch(`${API_BASE_URL}/feature-vote`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: currentUser, feature: featureName })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.message) {
+                    voteStatus.className = 'status success';
+                    voteStatus.textContent = 'Thank you for your vote! Your input matters.';
+                } else if (result.error) {
+                    voteStatus.className = 'status error';
+                    voteStatus.textContent = `Error: ${result.error}`;
+                }
+            })
+            .catch(error => {
+                voteStatus.className = 'status error';
+                voteStatus.textContent = `API Error: ${error.message}`;
+            });
+        }
+
+        function submitSuggestion() {
+            const suggestionInput = document.getElementById('suggestionInput').value.trim();
+            const suggestionStatus = document.getElementById('suggestionStatus');
+            if (!suggestionInput) {
+                suggestionStatus.style.display = 'block';
+                suggestionStatus.className = 'status warning';
+                suggestionStatus.textContent = 'Please enter a suggestion.';
+                return;
+            }
+
+            suggestionStatus.style.display = 'block';
+            suggestionStatus.className = 'status info';
+            suggestionStatus.textContent = 'Submitting your suggestion...';
+
+            fetch(`${API_BASE_URL}/feature-vote`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: currentUser, suggestion: suggestionInput })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.message) {
+                    suggestionStatus.className = 'status success';
+                    suggestionStatus.textContent = 'Thank you for your suggestion! We’ll review it carefully.';
+                    document.getElementById('suggestionInput').value = '';
+                } else if (result.error) {
+                    suggestionStatus.className = 'status error';
+                    suggestionStatus.textContent = `Error: ${result.error}`;
+                }
+            })
+            .catch(error => {
+                suggestionStatus.className = 'status error';
+                suggestionStatus.textContent = `API Error: ${error.message}`;
+            });
         }
 
         // Initialize app
